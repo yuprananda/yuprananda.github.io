@@ -3,178 +3,179 @@ import '../styles/global.css';
 
 const linkedIn = 'https://www.linkedin.com/in/yu-prananda-125116449/';
 const email = 'hello.yuprananda@gmail.com';
+const panels = [
+  { id: 'intro', en: 'Intro', idText: 'Awal' },
+  { id: 'about', en: 'About', idText: 'Tentang' },
+  { id: 'work', en: 'Selected work', idText: 'Karya' },
+  { id: 'contact', en: 'Contact', idText: 'Kontak' },
+];
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f5f3ec" />
-    <meta
-      name="description"
-      content="Yu Prananda is an independent software engineer building thoughtful full-stack products and practical business automation."
-    />
-    <meta property="og:title" content="Yu Prananda — Software Engineer" />
-    <meta
-      property="og:description"
-      content="Practical software for the work that matters. Full-stack engineering, business automation, and thoughtful systems."
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#101116" />
+    <meta name="description" content="Yu Prananda is an independent software engineer building full-stack products and practical business automation." />
+    <meta property="og:title" content="Yu Prananda — Independent Software Engineer" />
+    <meta property="og:description" content="I build software that makes complex work simpler. Full-stack engineering and practical business automation." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://yuprananda.github.io/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <title>Yu Prananda — Software Engineer</title>
+    <title>Yu Prananda — Independent Software Engineer</title>
   </head>
   <body>
-    <div class="site-shell">
+    <a class="skip-link" href="#portfolio" data-en="Skip to portfolio" data-id="Lewati ke portofolio">Skip to portfolio</a>
+    <div class="portfolio-shell">
       <header class="site-header">
-        <a class="wordmark" href="#top" aria-label="Yu Prananda, home">
-          <span class="wordmark-mark">y.</span>
-          <span>YU PRANANDA</span>
+        <a class="brand" href="#intro" data-go-to="0" aria-label="Yu Prananda, intro" data-label-en="Yu Prananda, intro" data-label-id="Yu Prananda, awal">
+          <span class="brand-mark">yu</span>
+          <span class="brand-name">YU PRANANDA</span>
         </a>
-        <nav class="main-nav" aria-label="Main navigation">
-          <a href="#work" data-en="Selected work" data-id="Karya pilihan">Selected work</a>
-          <a href="#services" data-en="What I do" data-id="Layanan">What I do</a>
-          <a href="#about" data-en="About" data-id="Tentang">About</a>
+
+        <nav class="panel-nav" aria-label="Portfolio panels" data-label-en="Portfolio panels" data-label-id="Panel portofolio">
+          {panels.map((panel, index) => (
+            <button
+              class:list={["panel-nav-item", { "is-current": index === 0 }]}
+              type="button"
+              data-go-to={index}
+              data-nav-en={`${String(index + 1).padStart(2, '0')} — ${panel.en}`}
+              data-nav-id={`${String(index + 1).padStart(2, '0')} — ${panel.idText}`}
+              aria-current={index === 0 ? 'step' : undefined}
+              aria-label={`${String(index + 1).padStart(2, '0')} — ${panel.en}`}
+            >
+              <span class="panel-nav-number">{String(index + 1).padStart(2, '0')}</span>
+              <span class="panel-nav-label" data-en={panel.en} data-id={panel.idText}>{panel.en}</span>
+            </button>
+          ))}
         </nav>
-        <div class="header-actions">
+
+        <div class="header-tools">
+          <span class="availability"><i></i><span data-en="Open to remote work" data-id="Terbuka untuk kerja remote">Open to remote work</span></span>
           <button class="language-toggle" type="button" aria-label="Switch language to Indonesian" aria-pressed="false">
-            <span class="language-code">ID</span>
-            <span class="language-divider">/</span>
-            <span class="language-code language-code-active">EN</span>
+            <span class="language-code">ID</span><span class="language-slash">/</span><span class="language-code language-code-active">EN</span>
           </button>
-          <a class="header-contact" href={`mailto:${email}`}>
-            <span data-en="Let's talk" data-id="Mari bicara">Let’s talk</span>
-            <span aria-hidden="true">↗</span>
-          </a>
         </div>
       </header>
 
-      <main id="top">
-        <section class="hero section-wrap" aria-labelledby="hero-title">
-          <div class="hero-copy">
-            <p class="eyebrow"><span class="status-dot"></span><span data-en="Independent software engineer · Indonesia" data-id="Software engineer independen · Indonesia">Independent software engineer · Indonesia</span></p>
-            <h1 id="hero-title">
-              <span data-en="Practical software" data-id="Software praktis">Practical software</span><br />
-              <span class="hero-title-second" data-en="for the work" data-id="untuk pekerjaan">for the work</span><br />
-              <span class="hero-title-third"><span data-en="that matters" data-id="yang berarti">that matters</span><span class="accent-period">.</span></span>
-            </h1>
-            <div class="hero-bottom">
-              <p class="hero-intro" data-en="I design and build full-stack products and business automation that make everyday work clearer, faster, and easier to trust." data-id="Saya merancang dan membangun produk full-stack serta otomasi bisnis yang membuat pekerjaan sehari-hari lebih jelas, cepat, dan dapat diandalkan.">
-                I design and build full-stack products and business automation that make everyday work clearer, faster, and easier to trust.
-              </p>
-              <a class="round-link" href="#work" aria-label="Explore selected work"><span aria-hidden="true">↓</span></a>
-            </div>
-          </div>
-
-          <div class="hero-art" aria-label="Illustration of a connected business system">
-            <div class="art-meta art-meta-top"><span>FIELD NOTES / 001</span><span>BERAU, ID</span></div>
-            <div class="orbit orbit-outer"></div>
-            <div class="orbit orbit-inner"></div>
-            <div class="orbit-axis orbit-axis-one"></div>
-            <div class="orbit-axis orbit-axis-two"></div>
-            <div class="system-core"><span class="core-glyph">B</span><span class="core-label">BICLESS<br />ERP</span></div>
-            <div class="orbit-node node-people"><span class="node-symbol">↗</span><span class="node-label" data-en="PEOPLE" data-id="TIM">PEOPLE</span></div>
-            <div class="orbit-node node-records"><span class="node-symbol node-symbol-coral">▤</span><span class="node-label" data-en="RECORDS" data-id="ARSIP">RECORDS</span></div>
-            <div class="orbit-node node-workflow"><span class="node-symbol node-symbol-cream">⌘</span><span class="node-label" data-en="WORKFLOW" data-id="ALUR KERJA">WORKFLOW</span></div>
-            <div class="art-caption"><span class="caption-line"></span><span data-en="One connected view of daily operations." data-id="Satu tampilan terhubung untuk operasional harian.">One connected view of daily operations.</span></div>
-            <div class="art-index">01 — 03</div>
-          </div>
-          <div class="hero-footnote"><span>YU PRANANDA</span><span>SOFTWARE / SYSTEMS / AUTOMATION</span><span>SCROLL TO EXPLORE ↓</span></div>
-        </section>
-
-        <section class="intro-band" aria-label="Introduction">
-          <div class="section-wrap intro-band-inner">
-            <p class="eyebrow"><span data-en="A thoughtful engineering partner" data-id="Partner engineering yang kolaboratif">A thoughtful engineering partner</span></p>
-            <p class="intro-statement" data-en="Good software starts with understanding the problem. I bring product thinking and hands-on engineering together to build useful tools for real operations." data-id="Software yang baik berawal dari memahami masalah. Saya memadukan cara berpikir produk dan kemampuan engineering untuk membangun alat yang berguna bagi operasional nyata.">
-              Good software starts with understanding the problem. I bring product thinking and hands-on engineering together to build useful tools for real operations.
-            </p>
-            <span class="intro-number">01<span>/</span>04</span>
-          </div>
-        </section>
-
-        <section class="work-section section-wrap" id="work">
-          <div class="section-heading">
-            <div><p class="eyebrow">01 — <span data-en="SELECTED WORK" data-id="KARYA PILIHAN">SELECTED WORK</span></p><h2 data-en="Built for the real world." data-id="Dibangun untuk dunia nyata.">Built for the real world.</h2></div>
-            <p class="section-aside" data-en="A closer look at a system shaped around the people who use it." data-id="Melihat lebih dekat sistem yang dirancang bersama orang-orang yang menggunakannya.">A closer look at a system shaped around the people who use it.</p>
-          </div>
-
-          <article class="project-card">
-            <div class="project-visual">
-              <div class="project-topline"><span>BICLESS ERP</span><span>WORKFORCE / OPERATIONS</span></div>
-              <div class="dashboard-window">
-                <div class="dashboard-sidebar"><span class="sidebar-brand">b<span>.</span></span><span class="sidebar-item sidebar-item-active">◫</span><span class="sidebar-item">◷</span><span class="sidebar-item">▤</span><span class="sidebar-item">⌁</span></div>
-                <div class="dashboard-main">
-                  <div class="dashboard-nav"><span data-en="Operations overview" data-id="Ringkasan operasional">Operations overview</span><span class="dashboard-avatar">YP</span></div>
-                  <div class="dashboard-welcome"><span data-en="Good morning" data-id="Selamat pagi">Good morning</span><span>✳</span></div>
-                  <div class="dashboard-cards">
-                    <div class="dash-card dash-card-dark"><span data-en="Workforce" data-id="Tenaga kerja">Workforce</span><strong>↗</strong><span class="dash-card-graphic graphic-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-                    <div class="dash-card dash-card-green"><span data-en="Documents" data-id="Dokumen">Documents</span><strong>↗</strong><span class="dash-card-graphic graphic-lines"><i></i><i></i><i></i></span></div>
-                    <div class="dash-card dash-card-orange"><span data-en="Leave & requests" data-id="Cuti & permintaan">Leave & requests</span><strong>↗</strong><span class="dash-card-graphic graphic-dots">••••••••••••••••</span></div>
-                  </div>
-                  <div class="dashboard-table"><span data-en="Recent activity" data-id="Aktivitas terbaru">Recent activity</span><div><i></i><i></i><i></i></div><div><i></i><i></i><i></i></div><div><i></i><i></i><i></i></div></div>
+      <main id="portfolio" class="carousel" aria-roledescription="carousel" aria-label="Yu Prananda portfolio" data-label-en="Yu Prananda portfolio" data-label-id="Portofolio Yu Prananda">
+        <div class="carousel-track" tabindex="0" aria-label="Use left and right arrow keys to change panels">
+          <section class="panel panel-intro is-active" id="intro" data-slide-label-en="Introduction" data-slide-label-id="Awal" aria-roledescription="slide" aria-label="1 of 4: Introduction">
+            <div class="panel-inner intro-inner">
+              <div class="intro-copy panel-content">
+                <p class="eyebrow"><span class="eyebrow-line"></span><span data-en="Independent software engineer · Indonesia" data-id="Software engineer independen · Indonesia">Independent software engineer · Indonesia</span></p>
+                <h1 class="hero-name"><span>Yu</span><span>Prananda<span class="name-period">.</span></span></h1>
+                <div class="hero-bottomline">
+                  <p class="hero-statement" data-en="I build software that makes complex work simpler." data-id="Saya membangun software yang membuat pekerjaan rumit jadi lebih sederhana.">I build software that makes complex work simpler.</p>
+                  <button class="text-link" type="button" data-go-to="2">
+                    <span data-en="See selected work" data-id="Lihat karya pilihan">See selected work</span>
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 12h14m-5.5-5.5L18.5 12 13 17.5" /></svg>
+                  </button>
                 </div>
               </div>
-              <div class="project-visual-note"><span class="visual-note-mark">✳</span><span data-en="Designed around daily operations" data-id="Dirancang untuk operasional harian">Designed around daily operations</span></div>
-            </div>
-            <div class="project-details">
-              <div class="project-number">PROJECT / 01</div>
-              <h3>Bicless ERP</h3>
-              <p class="project-lede" data-en="A workforce management system built to bring everyday operations into one dependable place." data-id="Sistem manajemen tenaga kerja yang menyatukan operasional sehari-hari dalam satu tempat yang andal.">A workforce management system built to bring everyday operations into one dependable place.</p>
-              <div class="project-story">
-                <div><span class="detail-label" data-en="THE CHALLENGE" data-id="TANTANGAN">THE CHALLENGE</span><p data-en="People, documents, and routine requests were being managed across spreadsheets and separate files." data-id="Data karyawan, dokumen, dan permintaan rutin dikelola melalui spreadsheet dan berkas yang terpisah.">People, documents, and routine requests were being managed across spreadsheets and separate files.</p></div>
-                <div><span class="detail-label" data-en="THE APPROACH" data-id="PENDEKATAN">THE APPROACH</span><p data-en="I independently initiated and developed a practical system for eligibility checks, document management, reminders, leave requests, and operational monitoring." data-id="Saya menginisiasi dan mengembangkan sistem praktis untuk pemeriksaan kelayakan, pengelolaan dokumen, pengingat, pengajuan cuti, dan pemantauan operasional.">I independently initiated and developed a practical system for eligibility checks, document management, reminders, leave requests, and operational monitoring.</p></div>
+
+              <div class="identity-art" aria-hidden="true">
+                <div class="identity-art-grid"></div>
+                <div class="identity-frame frame-back"></div>
+                <div class="identity-frame frame-front"></div>
+                <div class="identity-mark">yu<span>.</span></div>
+                <div class="identity-orbit orbit-one"></div>
+                <div class="identity-orbit orbit-two"></div>
+                <span class="art-coordinate coordinate-top">01° 37′ 00.0″ N</span>
+                <span class="art-coordinate coordinate-bottom">BUILD WITH INTENTION</span>
+                <span class="art-spark spark-one"></span><span class="art-spark spark-two"></span>
               </div>
-              <div class="project-bottom"><div class="tag-list"><span>Next.js</span><span>TypeScript</span><span>PostgreSQL</span><span>Prisma</span></div><span class="project-status"><i></i><span data-en="In daily use" data-id="Digunakan sehari-hari">In daily use</span></span></div>
-            </div>
-          </article>
-          <p class="work-note"><span>↗</span><span data-en="One focused case study. More of the story is available in conversation." data-id="Satu studi kasus utama. Cerita selengkapnya bisa dibahas bersama.">One focused case study. More of the story is available in conversation.</span></p>
-        </section>
 
-        <section class="services-section" id="services">
-          <div class="section-wrap services-wrap">
-            <div class="section-heading section-heading-light">
-              <div><p class="eyebrow">02 — <span data-en="HOW I CAN HELP" data-id="YANG BISA SAYA BANTU">HOW I CAN HELP</span></p><h2><span class="heading-line" data-en="From messy process" data-id="Dari proses rumit">From messy process</span><span class="heading-line" data-en="to useful product." data-id="jadi produk berguna.">to useful product.</span></h2></div>
-              <p class="section-aside" data-en="I work across the stack, stay close to the problem, and keep the solution grounded in the way your business runs." data-id="Saya bekerja menyeluruh di seluruh stack, memahami masalah dari dekat, dan menjaga solusi tetap sesuai cara bisnis Anda berjalan.">I work across the stack, stay close to the problem, and keep the solution grounded in the way your business runs.</p>
+              <div class="panel-index"><span>01</span><span class="index-rule"></span><span>04</span></div>
             </div>
-            <div class="service-grid">
-              <article class="service-card"><span class="service-index">01</span><div class="service-icon icon-stack"><i></i><i></i><i></i></div><h3 data-en="Full-stack development" data-id="Pengembangan full-stack">Full-stack development</h3><p data-en="Purposeful web applications, from clear interfaces to reliable data foundations." data-id="Aplikasi web yang dirancang dengan cermat, dari antarmuka yang jelas hingga fondasi data yang andal.">Purposeful web applications, from clear interfaces to reliable data foundations.</p><span class="service-arrow">↗</span></article>
-              <article class="service-card"><span class="service-index">02</span><div class="service-icon icon-flow"><i></i><i></i><i></i><i></i></div><h3 data-en="Business automation" data-id="Otomasi bisnis">Business automation</h3><p data-en="Less repetitive admin. Better-connected workflows built around how your team actually works." data-id="Kurangi pekerjaan administratif berulang. Hubungkan alur kerja sesuai cara tim Anda bekerja.">Less repetitive admin. Better-connected workflows built around how your team actually works.</p><span class="service-arrow">↗</span></article>
-              <article class="service-card"><span class="service-index">03</span><div class="service-icon icon-integration"><i>↗</i><i>↙</i><i>+</i></div><h3 data-en="Systems integration" data-id="Integrasi sistem">Systems integration</h3><p data-en="Bring disconnected tools and information together into a calmer, more useful system." data-id="Satukan perangkat dan informasi yang terpisah menjadi sistem yang lebih sederhana dan berguna.">Bring disconnected tools and information together into a calmer, more useful system.</p><span class="service-arrow">↗</span></article>
+          </section>
+
+          <section class="panel panel-about" id="about" data-slide-label-en="About Yu" data-slide-label-id="Tentang Yu" aria-roledescription="slide" aria-label="2 of 4: About Yu">
+            <div class="panel-inner about-inner">
+              <div class="about-heading panel-content">
+                <p class="eyebrow"><span class="eyebrow-line"></span><span>02 / </span><span data-en="A little about me" data-id="Tentang saya">A little about me</span></p>
+                <h2><span data-en="Independent by practice." data-id="Mandiri dalam berkarya.">Independent by practice.</span><span class="heading-accent" data-en="Curious by default." data-id="Selalu ingin tahu.">Curious by default.</span></h2>
+                <p class="about-copy" data-en="I’m Yu, an independent software engineer based in Indonesia. Since 2021, I’ve worked across full-stack development, business applications, and workflow automation—turning real operational needs into practical software." data-id="Saya Yu, software engineer independen dari Indonesia. Sejak 2021, saya mengerjakan pengembangan full-stack, aplikasi bisnis, dan otomasi workflow—mengubah kebutuhan operasional nyata menjadi software yang praktis.">I’m Yu, an independent software engineer based in Indonesia. Since 2021, I’ve worked across full-stack development, business applications, and workflow automation—turning real operational needs into practical software.</p>
+              </div>
+
+              <div class="craft-board panel-content" aria-label="Areas of work">
+                <div class="craft-board-top"><span data-en="THINGS I WORK ON" data-id="YANG SAYA KERJAKAN">THINGS I WORK ON</span><span>03</span></div>
+                <div class="craft-row"><span class="craft-number">01</span><span class="craft-name" data-en="Full-stack engineering" data-id="Full-stack engineering">Full-stack engineering</span><span class="craft-glyph glyph-build">↗</span></div>
+                <div class="craft-row"><span class="craft-number">02</span><span class="craft-name" data-en="Business automation" data-id="Otomasi bisnis">Business automation</span><span class="craft-glyph glyph-automate"><i></i><i></i><i></i></span></div>
+                <div class="craft-row"><span class="craft-number">03</span><span class="craft-name" data-en="Systems integration" data-id="Integrasi sistem">Systems integration</span><span class="craft-glyph glyph-connect">⤴</span></div>
+                <div class="craft-board-foot"><span data-en="From first conversation to working software." data-id="Dari obrolan awal hingga software yang siap dipakai.">From first conversation to working software.</span><span>↗</span></div>
+                <div class="craft-orbit craft-orbit-one"></div><div class="craft-orbit craft-orbit-two"></div>
+              </div>
+
+              <div class="about-foot"><span data-en="Based in East Kalimantan" data-id="Berbasis di Kalimantan Timur">Based in East Kalimantan</span><span class="foot-separator">/</span><span data-en="Working worldwide" data-id="Terbuka untuk kolaborasi global">Working worldwide</span><span class="tech-note">TS · React · Next.js · PostgreSQL · Prisma</span></div>
+              <div class="panel-index"><span>02</span><span class="index-rule"></span><span>04</span></div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section class="about-section section-wrap" id="about">
-          <div class="about-label"><p class="eyebrow">03 — <span data-en="A LITTLE ABOUT ME" data-id="TENTANG SAYA">A LITTLE ABOUT ME</span></p><div class="about-monogram">Y<span>.</span>P</div><p class="about-location"><span class="location-pin">⌖</span><span data-en="Based in East Kalimantan, Indonesia<br />Working with people everywhere." data-id="Berbasis di Kalimantan Timur, Indonesia<br />Terbuka bekerja dengan tim di mana pun.">Based in East Kalimantan, Indonesia<br />Working with people everywhere.</span></p></div>
-          <div class="about-copy">
-            <h2 data-en="Curious about the problem. Careful with the solution." data-id="Penasaran pada masalahnya. Cermat merancang solusinya.">Curious about the problem. Careful with the solution.</h2>
-            <p data-en="I’m Yu, an independent software engineer based in Indonesia. Since 2021, I’ve worked across full-stack development, business applications, and workflow automation—turning real operational needs into software people can rely on." data-id="Saya Yu, software engineer independen dari Indonesia. Sejak 2021, saya bekerja di pengembangan full-stack, aplikasi bisnis, dan otomasi workflow—menerjemahkan kebutuhan operasional nyata menjadi software yang dapat diandalkan.">I’m Yu, an independent software engineer based in Indonesia. Since 2021, I’ve worked across full-stack development, business applications, and workflow automation—turning real operational needs into software people can rely on.</p>
-            <p data-en="I studied Informatics Engineering at Universitas Ngudi Waluyo. I enjoy learning how a business works before deciding what to build, and staying involved from the first conversation through a working solution." data-id="Saya menempuh pendidikan Teknik Informatika di Universitas Ngudi Waluyo. Saya senang memahami cara kerja bisnis sebelum menentukan apa yang perlu dibangun, dan terlibat sejak diskusi awal hingga solusi benar-benar digunakan.">I studied Informatics Engineering at Universitas Ngudi Waluyo. I enjoy learning how a business works before deciding what to build, and staying involved from the first conversation through a working solution.</p>
-            <div class="about-tools"><span class="detail-label" data-en="TOOLS I WORK WITH" data-id="TEKNOLOGI YANG SAYA GUNAKAN">TOOLS I WORK WITH</span><div class="tag-list"><span>TypeScript</span><span>React</span><span>Next.js</span><span>PostgreSQL</span><span>Prisma</span></div></div>
-          </div>
-        </section>
+          <section class="panel panel-work" id="work" data-slide-label-en="Selected work" data-slide-label-id="Karya pilihan" aria-roledescription="slide" aria-label="3 of 4: Selected work">
+            <div class="panel-inner work-inner">
+              <div class="work-heading panel-content">
+                <p class="eyebrow"><span class="eyebrow-line"></span><span>03 / </span><span data-en="Selected work" data-id="Karya pilihan">Selected work</span></p>
+                <h2><span data-en="Built for the" data-id="Dirancang untuk">Built for the</span><span class="heading-accent" data-en="everyday." data-id="keseharian.">everyday.</span></h2>
+                <p class="work-summary" data-en="One example of practical software, shaped around the people who use it." data-id="Satu contoh software praktis yang dirancang sesuai kebutuhan orang-orang yang menggunakannya.">One example of practical software, shaped around the people who use it.</p>
+              </div>
 
-        <section class="contact-section">
-          <div class="section-wrap contact-wrap">
-            <div><p class="eyebrow">04 — <span data-en="HAVE A PROJECT IN MIND?" data-id="PUNYA PROYEK YANG INGIN DIBAHAS?">HAVE A PROJECT IN MIND?</span></p><h2><span class="heading-line" data-en="Let’s make" data-id="Mari buat">Let’s make</span><span class="heading-line" data-en="work work better." data-id="pekerjaan lebih baik.">work work better.</span></h2></div>
-            <div class="contact-aside"><p data-en="Tell me what’s slowing your team down, or what you’ve been wanting to build. I’d love to hear about it." data-id="Ceritakan hal yang memperlambat tim Anda atau ide yang ingin Anda bangun. Saya ingin mendengarnya.">Tell me what’s slowing your team down, or what you’ve been wanting to build. I’d love to hear about it.</p><a class="contact-email" href={`mailto:${email}`}>hello.yuprananda@gmail.com <span>↗</span></a><a class="contact-button" href={`mailto:${email}`}><span data-en="Start a conversation" data-id="Mulai percakapan">Start a conversation</span><span>↗</span></a></div>
-          </div>
-        </section>
+              <article class="project-feature panel-content">
+                <div class="project-art" aria-hidden="true">
+                  <div class="project-art-head"><span>B / SYSTEM STUDY</span><span>01—24</span></div>
+                  <div class="workflow-map">
+                    <div class="workflow-spine"></div>
+                    <div class="workflow-node workflow-node-main"><span class="workflow-node-icon">b.</span><span class="workflow-node-label">WORKFORCE</span></div>
+                    <div class="workflow-node workflow-node-eligibility"><span class="workflow-node-icon">✓</span><span class="workflow-node-label" data-en="ELIGIBILITY" data-id="KELAYAKAN">ELIGIBILITY</span></div>
+                    <div class="workflow-node workflow-node-documents"><span class="workflow-node-icon">▤</span><span class="workflow-node-label" data-en="DOCUMENTS" data-id="DOKUMEN">DOCUMENTS</span></div>
+                    <div class="workflow-node workflow-node-requests"><span class="workflow-node-icon">↗</span><span class="workflow-node-label" data-en="REQUESTS" data-id="PERMINTAAN">REQUESTS</span></div>
+                    <span class="workflow-signal"></span>
+                  </div>
+                  <div class="project-art-caption"><span></span><span data-en="One dependable place for daily operations" data-id="Satu tempat andal untuk operasional harian">One dependable place for daily operations</span></div>
+                </div>
+
+                <div class="project-copy">
+                  <div class="project-kicker"><span>BICLESS ERP</span><span data-en="WORKFORCE SYSTEM" data-id="SISTEM TENAGA KERJA">WORKFORCE SYSTEM</span></div>
+                  <h3>Bicless ERP</h3>
+                  <p data-en="I independently initiated and built a workforce management system to bring spreadsheets, documents, and everyday requests into one practical workflow. It now supports day-to-day operations." data-id="Saya menginisiasi dan membangun sistem manajemen tenaga kerja untuk menyatukan spreadsheet, dokumen, dan permintaan harian ke dalam satu workflow praktis. Sistem ini kini mendukung operasional sehari-hari.">I independently initiated and built a workforce management system to bring spreadsheets, documents, and everyday requests into one practical workflow. It now supports day-to-day operations.</p>
+                  <div class="project-meta"><span data-en="MY ROLE" data-id="PERAN SAYA">MY ROLE</span><strong data-en="Independent engineer" data-id="Engineer independen">Independent engineer</strong></div>
+                  <div class="project-tools"><span>TypeScript</span><span>Next.js</span><span>PostgreSQL</span><span>Prisma</span></div>
+                </div>
+              </article>
+
+              <div class="panel-index"><span>03</span><span class="index-rule"></span><span>04</span></div>
+            </div>
+          </section>
+
+          <section class="panel panel-contact" id="contact" data-slide-label-en="Contact Yu" data-slide-label-id="Kontak Yu" aria-roledescription="slide" aria-label="4 of 4: Contact Yu">
+            <div class="panel-inner contact-inner">
+              <div class="contact-copy panel-content">
+                <p class="eyebrow"><span class="eyebrow-line"></span><span>04 / </span><span data-en="Your next idea starts here" data-id="Ide berikutnya dimulai di sini">Your next idea starts here</span></p>
+                <h2><span data-en="Let’s make" data-id="Mari buat">Let’s make</span><span class="heading-accent" data-en="work better." data-id="pekerjaan lebih baik.">work better.</span></h2>
+                <p class="contact-intro" data-en="Have a process worth improving or a product you want to bring to life? Tell me about it." data-id="Punya proses yang ingin diperbaiki atau produk yang ingin diwujudkan? Ceritakan kepada saya.">Have a process worth improving or a product you want to bring to life? Tell me about it.</p>
+                <a class="contact-email" href={`mailto:${email}`}><span>{email}</span><span aria-hidden="true">↗</span></a>
+                <a class="contact-cta" href={`mailto:${email}`}><span data-en="Start a conversation" data-id="Mulai percakapan">Start a conversation</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 12h14m-5.5-5.5L18.5 12 13 17.5" /></svg></a>
+              </div>
+              <div class="contact-art" aria-hidden="true"><span>YU</span><span class="contact-art-orbit"></span><span class="contact-art-dot"></span><span class="contact-art-caption">GOOD WORK, TOGETHER.</span></div>
+              <div class="contact-links"><a href={linkedIn} target="_blank" rel="noreferrer">LinkedIn <span>↗</span></a><span>© 2026 Yu Prananda</span></div>
+              <div class="panel-index"><span>04</span><span class="index-rule"></span><span>04</span></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="carousel-controls" aria-label="Carousel controls">
+          <button class="control-button previous-button" type="button" aria-label="Previous panel" data-label-en="Previous panel" data-label-id="Panel sebelumnya" disabled>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19.5 12h-14m5.5 5.5L5.5 12 11 6.5" /></svg>
+          </button>
+          <div class="progress-wrap"><span class="current-slide">01</span><div class="progress-track"><span class="progress-fill"></span></div><span class="total-slides">04</span></div>
+          <button class="control-button next-button" type="button" aria-label="Next panel" data-label-en="Next panel" data-label-id="Panel berikutnya">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4.5 12h14m-5.5-5.5L18.5 12 13 17.5" /></svg>
+          </button>
+          <span class="swipe-hint" data-en="SWIPE OR USE ← →" data-id="GESER ATAU GUNAKAN ← →">SWIPE OR USE ← →</span>
+        </div>
+        <p class="sr-only" aria-live="polite" aria-atomic="true" id="slide-announcement">Slide 1 of 4: Introduction</p>
       </main>
-
-      <footer class="site-footer section-wrap">
-        <a class="footer-brand" href="#top"><span class="wordmark-mark">y.</span><span>YU PRANANDA</span></a>
-        <span class="footer-note" data-en="Independent by choice. Collaborative by nature." data-id="Mandiri dalam berkarya. Kolaboratif dalam proses.">Independent by choice. Collaborative by nature.</span>
-        <div class="footer-links"><a href={linkedIn} target="_blank" rel="noreferrer">LinkedIn ↗</a><a href={`mailto:${email}`}>Email ↗</a></div>
-        <span class="footer-copy">© 2026</span>
-      </footer>
     </div>
     <script src="../scripts/site.ts"></script>
   </body>
