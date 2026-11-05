@@ -1,11 +1,52 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Web in Developing</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Yu Prananda &#8212; software engineer building web applications, internal tools, and workflow automation."
+    />
+    <title>Yu Prananda &#8212; Software Engineer</title>
+    <link rel="icon" href="assets/images/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/site.css" />
   </head>
   <body>
-    Web in Developing
+    <header>
+      <a href="#intro" class="brand"
+        >Yu Prananda<span>independent software engineer</span></a
+      >
+      <nav aria-label="Sections"></nav>
+      <div class="languages">
+        <button data-lang="en">EN</button><span>/</span
+        ><button data-lang="id">ID</button>
+      </div>
+    </header>
+    <!-- Page content is rendered from assets/js/content.js. -->
+    <main id="pages"></main>
+    <noscript
+      >This portfolio needs JavaScript for its horizontal pages. Contact:
+      <a href="mailto:hello.yuprananda@gmail.com">hello.yuprananda@gmail.com</a
+      >.</noscript
+    >
+    <footer>
+      <span class="footer-credit" id="footer-credit"
+        >Designed &amp; built by Yu Prananda</span
+      >
+      <span class="sr-only" id="hint"></span>
+      <div class="footer-navigation">
+        <span id="position"></span>
+        <div class="footer-arrows">
+          <button id="prev" aria-label="Previous page">&#8592;</button>
+          <button id="next" aria-label="Next page">&#8594;</button>
+        </div>
+      </div>
+    </footer>
+    <!-- Deferred scripts run in dependency order, including when opened as a local file. -->
+    <script defer src="assets/js/config.js"></script>
+    <script defer src="assets/js/content.js"></script>
+    <script defer src="assets/js/icons.js"></script>
+    <script defer src="assets/js/project-view.js"></script>
+    <script defer src="assets/js/app.js"></script>
   </body>
 </html>
