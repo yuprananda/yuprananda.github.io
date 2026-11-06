@@ -325,10 +325,13 @@
       }),
   );
   // Mouse/trackpad wheel never changes pages. Touch swipe remains available on phones.
-  let x;
+  let x, y;
   window.addEventListener(
     "touchstart",
-    (e) => (x = e.changedTouches[0].clientX),
+    (e) => {
+      x = e.changedTouches[0].clientX;
+      y = e.changedTouches[0].clientY;
+    },
     { passive: true },
   );
   window.addEventListener(
@@ -336,7 +339,9 @@
     (e) => {
       if (locked || document.querySelector("#project-gallery[open]")) return;
       let d = x - e.changedTouches[0].clientX;
-      if (Math.abs(d) > 45) go(current + Math.sign(d));
+      const dy = y - e.changedTouches[0].clientY;
+      if (Math.abs(d) > 45 && Math.abs(d) > Math.abs(dy))
+        go(current + Math.sign(d));
     },
     { passive: true },
   );

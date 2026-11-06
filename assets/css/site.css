@@ -2521,14 +2521,21 @@ p {
 }
 @media (max-width: 700px) {
   #services .service-groups {
-    gap: 12px;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  #services {
+    padding: 12px 4vw;
+  }
+  #services .eyebrow {
+    margin-bottom: 10px !important;
   }
   #services .service-group {
-    padding: 14px 12px;
+    padding: 10px;
     border-radius: 8px;
   }
   #services .service-group-marker {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
   #services .service-group-marker svg {
     width: 21px;
@@ -2536,21 +2543,23 @@ p {
   }
   #services .service-group h2 {
     font-size: 12px;
-    min-height: 36px;
+    min-height: 0;
     margin-bottom: 8px;
   }
   #services .service-group p {
     font-size: 10px;
     line-height: 1.5;
-    min-height: 60px;
-    margin-bottom: 12px;
+    min-height: 0;
+    margin-bottom: 8px;
   }
   #services .service-group ul {
-    padding-top: 10px;
-    gap: 7px;
+    padding-top: 7px;
+    gap: 5px;
   }
   #services .service-group li {
     font-size: 9px;
+    gap: 5px;
+    line-height: 1.4;
   }
 }
 @media (max-height: 700px) and (max-width: 700px) {
@@ -2585,6 +2594,31 @@ p {
   #services .service-group li {
     font-size: 8px;
     line-height: 1.4;
+  }
+}
+@media (max-width: 700px) and (max-height: 600px) {
+  #services .service-group {
+    padding: 8px;
+  }
+  #services .service-group-marker {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin: 0;
+  }
+  #services .service-group-marker svg {
+    width: 14px;
+    height: 14px;
+  }
+  #services .service-group-marker span {
+    display: none;
+  }
+  #services .service-group h2 {
+    padding-right: 18px;
+  }
+  #services .service-group ul {
+    padding-top: 5px;
+    gap: 3px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
