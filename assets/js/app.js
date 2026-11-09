@@ -8,7 +8,6 @@
     siteConfig,
     copy,
     serviceGroups,
-    projectSamples,
     processSteps,
     heroText,
     galleryImages,
@@ -17,8 +16,6 @@
   } = window.Portfolio;
   let activeProcessStep = 0;
   let processWasVisible = false;
-  // Keep layout examples available for future project additions, hidden in production.
-  const SHOW_PROJECT_SAMPLES = siteConfig.showProjectSamples;
   let selectedProject = 0;
   let originalWorkContent, originalWorkPreview;
 
@@ -40,43 +37,41 @@
     return `<div class="service-groups">${groups.map((g, i) => `<article class="service-group"><div class="service-group-marker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${serviceIcons[[0, 1, 5, 2][i]]}</svg><span>0${i + 1}</span></div><h2>${g[0]}</h2><p>${g[1]}</p><ul>${g[2].map((item) => `<li>${item}</li>`).join("")}</ul></article>`).join("")}</div>`;
   }
 
-  // PROJECT EXAMPLES: intentionally hidden on the public site. See docs/PROJECTS.md before adding real projects.
+  const jikanda = {
+    name: "Jikanda",
+    type: { en: "Open source", id: "Open source" },
+    preview: "assets/images/jikanda-focus.webp",
+    previewAlt: "Jikanda desktop focus timer with example tasks",
+  };
+  const jikandaGallery = [
+    [jikanda.preview, "Focus timer · dark theme", "Timer fokus · tema gelap"],
+    ["assets/images/jikanda-focus-light.webp", "Focus timer · light theme", "Timer fokus · tema terang"],
+    ["assets/images/jikanda-mini.webp", "Floating mini timer", "Mini timer mengambang"],
+    ["assets/images/jikanda-share-card.webp", "Achievement card · example data", "Kartu pencapaian · data contoh"],
+  ];
   function setupProjectSwitcher() {
-    if (!SHOW_PROJECT_SAMPLES) {
-      selectedProject = 0;
-      return;
-    }
     const section = document.querySelector("#work");
     originalWorkContent = section.querySelector(".content").innerHTML;
     originalWorkPreview = section.querySelector(".project-preview").outerHTML;
     selectProject(selectedProject);
   }
   function selectProject(index) {
-    if (!SHOW_PROJECT_SAMPLES) return;
     selectedProject = index;
     const section = document.querySelector("#work");
     const content = section.querySelector(".content");
-    const labels =
-      lang === "id"
-        ? ["Bicless", "Mobile", "Otomasi", "AI"]
-        : ["Bicless", "Mobile", "Automation", "AI"];
-    const choices = `<div class="project-switcher" role="group" aria-label="${lang === "id" ? "Pilih proyek" : "Choose a project"}">${labels.map((label, i) => `<button type="button" data-project="${i}" aria-pressed="${i === index}"><span>0${i + 1}</span> ${label}</button>`).join("")}</div>`;
-    const previousVisual = section.querySelector(
-      ".project-preview, .project-concept",
-    );
-    let visual;
+    const isId = lang === "id";
+    const choices = `<div class="project-switcher" role="group" aria-label="${isId ? "Pilih proyek" : "Choose a project"}">${["Bicless", "Jikanda"].map((name, i) => `<button type="button" data-project="${i}" aria-pressed="${i === index}"><span>0${i + 1}</span> ${name}</button>`).join("")}</div>`;
+    let visual = originalWorkPreview;
     if (index === 0) {
       content.innerHTML = choices + originalWorkContent;
-      visual = originalWorkPreview;
     } else {
-      const demos = projectSamples[lang];
-      const d = demos[index - 1];
-      content.innerHTML =
-        choices +
-        `<h1>${d[0]}</h1><p>${d[1]}</p><div class="item"><h2>${d[2]}</h2><p>${d[3]}</p></div><div class="project-status"><span class="status-label"><span class="status-dot" aria-hidden="true"></span>${lang === "id" ? "Simulasi layout" : "Layout simulation"}</span><div class="project-meta"><span class="privacy-label">${lang === "id" ? "Bukan proyek nyata" : "Not a real project"}</span></div></div><div class="project-stack"><span class="stack-label">${lang === "id" ? "Teknologi" : "Built with"}</span><ul><li>${lang === "id" ? "Belum ditambahkan" : "To be added"}</li></ul></div>`;
-      visual = `<figure class="project-preview simulation-preview" aria-label="${lang === "id" ? "Placeholder pratinjau" : "Preview placeholder"}"><div class="preview-toolbar" aria-hidden="true"><span class="window-controls"><i></i><i></i><i></i></span><span>${d[0]}</span></div><div class="preview-screen"><div class="concept-canvas"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">${serviceIcons[[0, 3, 1, 2][index]]}</svg><span>${lang === "id" ? "Screenshot proyek Anda di sini" : "Your project screenshots here"}</span><div class="concept-lines"><i></i><i></i><i></i></div></div></div></figure>`;
+      const description = isId
+        ? "Aplikasi fokus desktop dengan Pomodoro, Deep Focus, dan Flow. Timer mini, riwayat sesi, dan kartu pencapaian tersedia secara offline."
+        : "A desktop companion with Pomodoro, Deep Focus, and Flow. Includes a mini timer, session history, and offline achievement cards.";
+      content.innerHTML = choices + `<p class="eyebrow">${isId ? "Luangkan waktu untuk yang berarti." : "Make time for what matters."}</p><h1>Jikanda</h1><p>${description}</p><div class="item"><h2>${isId ? "Dikembangkan secara mandiri" : "Built independently"}</h2><p>${isId ? "Saya merancang dan membangun aplikasi native dengan Rust dan Slint. Data disimpan lokal tanpa akun atau layanan cloud." : "I design and build this native app with Rust and Slint. Data stays local, with no account or cloud service."}</p></div>${renderProjectStatus("Windows beta", lang, jikanda)}<div class="project-stack"><span class="stack-label">${isId ? "Teknologi" : "Built with"}</span><ul><li>Rust</li><li>Slint</li><li>Cargo</li></ul></div><div class="project-links"><a href="https://github.com/yuprananda/jikanda/releases" target="_blank" rel="noopener noreferrer">${isId ? "Unduh beta" : "Download beta"} ↗</a><a href="https://github.com/yuprananda/jikanda" target="_blank" rel="noopener noreferrer">Source code ↗</a></div>`;
+      visual = renderProjectPreview(jikanda);
     }
-    previousVisual.outerHTML = visual;
+    section.querySelector(".project-preview").outerHTML = visual;
   }
   document.addEventListener("click", (event) => {
     const button = event.target.closest("[data-project]");
@@ -378,18 +373,20 @@
 
   // Public screenshot paths/captions are in content.js. Never publish raw captures or session files.
   function showGalleryImage(index) {
-    galleryIndex = (index + galleryImages.length) % galleryImages.length;
-    const item = galleryImages[galleryIndex];
+    const images = selectedProject === 1 ? jikandaGallery : galleryImages;
+    galleryIndex = (index + images.length) % images.length;
+    const item = images[galleryIndex];
     const label = item[lang === "id" ? 2 : 1];
     gallery.querySelector("img").src = item[0];
     gallery.querySelector("img").alt = label;
     gallery.querySelector(".gallery-caption").textContent =
-      `${galleryIndex + 1} / ${galleryImages.length} - ${label}`;
+      `${galleryIndex + 1} / ${images.length} - ${label}`;
   }
   let galleryClosing = false;
   function openGallery(trigger) {
     if (gallery.open || galleryClosing) return;
     galleryTrigger = trigger;
+    gallery.querySelector("#gallery-title").textContent = selectedProject === 1 ? jikanda.name : siteConfig.project.name;
     showGalleryImage(0);
     gallery.showModal();
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

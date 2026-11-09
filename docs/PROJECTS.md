@@ -1,10 +1,10 @@
 # Adding portfolio projects
 
-The public Projects section currently shows only Bicless ERP. Layout example content for Mobile, Automation, and AI lives in `assets/js/content.js`; rendering is in `assets/js/app.js`. These examples stay hidden with `siteConfig.showProjectSamples = false` in config.js.
+The public Projects section shows Bicless ERP and Jikanda with a two-project selector. Bicless metadata lives in `config.js` and `content.js`; Jikanda copy, metadata, and its separate gallery live beside `selectProject()` in `assets/js/app.js`. Screenshots are optimized WebP files under `assets/images/`.
 
 ## Revisit the layout examples
 
-Set `siteConfig.showProjectSamples` in `assets/js/config.js` to `true` locally to preview the saved project switcher and example layouts. Set it back to `false` before publishing unless examples have been replaced with real projects.
+Legacy layout example content remains in `content.js` as reference only and is not rendered. The public selector contains real projects only.
 
 ## Add a real project
 

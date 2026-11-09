@@ -12,3 +12,5 @@ The MIT license covers this portfolio's authored HTML, CSS, JavaScript, and docu
 | Decorative service/process SVGs and favicon | Authored for this portfolio; included under MIT.                                                                                                                                                     |
 
 Serving active showcase assets with this portfolio is intentional. Public availability does not automatically grant permission for unrelated reuse. Forking the code does not transfer ownership of Bicless, client relationships, or a person's identity.
+
+Jikanda screenshots (`assets/images/jikanda-*.webp`) are optimized from the owner's Jikanda repository documentation screenshots and show example data. They are showcase assets excluded from this portfolio's MIT code license. See [Jikanda](https://github.com/yuprananda/jikanda) for its source, GPL-3.0-only application license, and asset notices.

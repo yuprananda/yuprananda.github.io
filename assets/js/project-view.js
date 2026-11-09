@@ -6,11 +6,11 @@
    * Config values are trusted source content. For a project with no public client,
    * leave clientName/clientLogo empty: the adoption badge will not be rendered.
    */
-  function renderProjectStatus(text, language) {
+  function renderProjectStatus(text, language, project = siteConfig.project) {
     const status = text;
-    const { clientName, clientLogo } = siteConfig.project;
+    const { clientName, clientLogo } = project;
     const usedBy = language === "id" ? "Digunakan oleh" : "Used by";
-    const projectType = siteConfig.project.type?.[language];
+    const projectType = project.type?.[language];
     const typeBadge = projectType
       ? `<span class="project-type"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-14-2 18"/></svg>${projectType}</span>`
       : "";
@@ -24,8 +24,7 @@
     return `<div class="project-status"><span class="status-label"><span class="status-dot" aria-hidden="true"></span>${status}</span><div class="project-meta">${typeBadge}${client}</div></div>`;
   }
 
-  function renderProjectPreview() {
-    const project = siteConfig.project;
+  function renderProjectPreview(project = siteConfig.project) {
     return `<figure class="project-preview" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Open ${project.name} gallery"><div class="preview-toolbar" aria-hidden="true"><span class="window-controls"><i></i><i></i><i></i></span><span>${project.name}</span></div><div class="preview-screen"><img class="preview" src="${project.preview}" alt="${project.previewAlt}" width="1600" height="1000"></div></figure>`;
   }
 
