@@ -6,19 +6,12 @@ window.Portfolio = window.Portfolio || {};
    * Paths in content.js are relative to index.html; keep them relative for GitHub Pages subdirectories. */
   const siteConfig = {
     name: "Yu Prananda",
-    title: "Yu Prananda \u2014 Software Engineer",
+    title: "Yu Prananda \u2014 Frontend Developer",
     email: "hello.yuprananda@gmail.com",
     social: {
       github: "https://github.com/yuprananda",
       linkedin: "https://www.linkedin.com/in/yu-prananda-125116449",
     },
-    projectTechnologies: [
-      "Electron",
-      "React",
-      "TypeScript",
-      "Supabase",
-      "Vite",
-    ],
     // Use your own portrait and verified client/project information when forking.
     portrait: {
       src: "assets/images/portrait-color.webp",
@@ -26,8 +19,7 @@ window.Portfolio = window.Portfolio || {};
     },
     project: {
       name: "Bicless ERP",
-      // Classify the project truthfully; use "Open source" only with a public source link.
-      type: { en: "Independent project", id: "Proyek mandiri" },
+      type: { en: "Operations interface", id: "Antarmuka operasional" },
       preview: "assets/images/bicless-dashboard-real.webp",
       previewAlt: "Bicless ERP dashboard - anonymized data",
       clientName: "PT MBB",
