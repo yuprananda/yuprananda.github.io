@@ -13,4 +13,8 @@ The MIT license covers this portfolio's authored HTML, CSS, JavaScript, and docu
 
 Serving active showcase assets with this portfolio is intentional. Public availability does not automatically grant permission for unrelated reuse. Forking the code does not transfer ownership of Bicless, client relationships, or a person's identity.
 
-Jikanda screenshots (`assets/images/jikanda-*.webp`) are optimized from the owner's Jikanda repository documentation screenshots and show example data. They are showcase assets excluded from this portfolio's MIT code license. See [Jikanda](https://github.com/yuprananda/jikanda) for its source, GPL-3.0-only application license, and asset notices.
+Jikanda screenshots (`assets/images/jikanda-*.webp`) are high-resolution UI captures rendered from the owner's Jikanda interface specifications and brand masks with example data. They are showcase assets excluded from this portfolio's MIT code license. See [Jikanda](https://github.com/yuprananda/jikanda) for its source, GPL-3.0-only application license, and asset notices.
+
+Rehearsal screenshots (`assets/images/rehearsal-*.webp`) are captured at 2x resolution from the owner's promotional page for [Rehearsal](https://mangmengmong-studio.github.io/page-rehearsal/) by MangMengMong Studio. They are showcase assets excluded from this portfolio's MIT code license.
+
+Aku Oregairu screenshots (`assets/images/oregairu-*.webp`) are captured at 3x mobile resolution from the owner's progressive web app [Aku Oregairu](https://muhammadyusufprananda.github.io/aku-oregairu/). They are showcase assets excluded from this portfolio's MIT code license.

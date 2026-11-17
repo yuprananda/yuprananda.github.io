@@ -18,12 +18,12 @@ window.Portfolio = window.Portfolio || {};
       alt: "Yu Prananda",
     },
     project: {
-      name: "Bicless ERP",
-      type: { en: "Operations interface", id: "Antarmuka operasional" },
-      preview: "assets/images/bicless-dashboard-real.webp",
-      previewAlt: "Bicless ERP dashboard - anonymized data",
-      clientName: "PT MBB",
-      clientLogo: "assets/images/logo_MBB.png",
+      name: "Rehearsal",
+      type: { en: "Visual novel web", id: "Web visual novel" },
+      preview: "assets/images/rehearsal-hero-ella.webp",
+      previewAlt: "Rehearsal visual novel promotional website — Ella CG scene",
+      clientName: "",
+      clientLogo: "",
     },
     showProjectSamples: false,
   };

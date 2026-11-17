@@ -6,7 +6,7 @@
    * This is trusted, repository-owned content rendered as HTML: never insert untrusted user input. */
   const copy = {
     en: {
-      nav: ["Hello", "Philosophy", "Tech", "Projects", "Contact"],
+      nav: ["Hello", "Philosophy", "Tech", "Projects", "Thoughts", "Contact"],
       role: "Frontend developer",
       hint: "Use the menu or arrows; swipe on mobile",
       slides: [
@@ -27,9 +27,14 @@
           "Every device brings its own ergonomics. I anchor every interface in core web fundamentals, then pick the right stack for the screen.",
         ],
         [
-          "Projects",
-          "Under maintenance.",
-          "Selected case studies are currently being prepared.",
+          "Selected work \u00b7 Visual novel web",
+          "Rehearsal",
+          "A bilingual promotional site for MangMengMong Studio \u2014 atmospheric CG scenes, tactile notebook modals, and calm pacing.",
+        ],
+        [
+          "Thoughts \u00b7 Personal notes",
+          "Notes on AI, craft, and choosing frontend.",
+          "Conversations on staying rooted in fundamentals, why frontend still matters, and fighting generic interfaces with human care.",
         ],
         [
           "Great interfaces start with a shared vision.",
@@ -40,7 +45,7 @@
       ],
     },
     id: {
-      nav: ["Halo", "Filosofi", "Teknologi", "Proyek", "Kontak"],
+      nav: ["Halo", "Filosofi", "Teknologi", "Proyek", "Thoughts", "Kontak"],
       role: "Frontend developer",
       hint: "Gunakan menu atau panah; geser pada ponsel",
       slides: [
@@ -61,9 +66,14 @@
           "Setiap perangkat punya ritme dan batasannya sendiri. Saya bertumpu pada fundamental web, lalu memilih teknologi paling pas untuk layarnya.",
         ],
         [
-          "Proyek",
-          "Under maintenance.",
-          "Studi kasus pilihan sedang disiapkan.",
+          "Karya pilihan \u00b7 Web visual novel",
+          "Rehearsal",
+          "Situs promosional dua bahasa untuk MangMengMong Studio \u2014 latar CG atmosferik, modal bergaya buku catatan, dan ritme visual yang tenang.",
+        ],
+        [
+          "Thoughts \u00b7 Catatan pribadi",
+          "Pemikiran soal AI, rasa, & pilihan frontend.",
+          "Obrolan singkat tentang menjaga fundamental, kenapa peran frontend tetap penting, dan melawan tampilan generik dengan perhatian manusia.",
         ],
         [
           "Antarmuka yang baik berawal dari visi yang searah.",
@@ -142,7 +152,7 @@
     ],
   };
 
-  /** Under-maintenance gallery slots for #work. Replace with real case studies when ready. */
+  /** Under-maintenance gallery slots for #projects. Replace with real case studies when ready. */
   const projects = {
     id: [
       {
@@ -385,13 +395,586 @@
     },
   };
 
+  const featuredProjects = [
+    {
+      id: "rehearsal",
+      device: "laptop",
+      name: "Rehearsal",
+      studio: "MangMengMong Studio",
+      url: "https://mangmengmong-studio.github.io/page-rehearsal/",
+      urlDisplay: "mangmengmong-studio.github.io/page-rehearsal",
+      ctaLabel: {
+        en: "Visit live site",
+        id: "Kunjungi situs",
+      },
+      preview: "assets/images/rehearsal-hero-ella.webp",
+      previewAlt: {
+        en: "Rehearsal visual novel website \u2014 Ella CG opening screen",
+        id: "Situs visual novel Rehearsal \u2014 layar pembuka CG Ella",
+      },
+      eyebrow: {
+        en: "Selected work \u00b7 Visual novel web",
+        id: "Karya pilihan \u00b7 Web visual novel",
+      },
+      titleMuted: "MangMengMong Studio",
+      titleInk: "Rehearsal",
+      description: {
+        en: "A bilingual promotional site for MangMengMong Studio \u2014 atmospheric CG scenes, tactile notebook modals, and calm pacing.",
+        id: "Situs promosional dua bahasa untuk MangMengMong Studio \u2014 latar CG atmosferik, modal bergaya buku catatan, dan ritme visual yang tenang.",
+      },
+      gallery: [
+        [
+          "assets/images/rehearsal-hero-ella.webp",
+          "Opening Stage \u00b7 Ella",
+          "Layar Pembuka \u00b7 Ella",
+          "Layered CG backdrop, release update card, and character quote",
+          "Latar CG berlapis, kartu pembaruan rilis, dan kutipan karakter",
+        ],
+        [
+          "assets/images/rehearsal-hero-manda.webp",
+          "Scene Switcher \u00b7 Manda",
+          "Pengganti Latar \u00b7 Manda",
+          "Crossfading CG scenery paired with live dialogue switching",
+          "Transisi halus antar latar CG seiring pergantian dialog",
+        ],
+        [
+          "assets/images/rehearsal-story.webp",
+          "Story Modal \u00b7 Notebook",
+          "Modal Cerita \u00b7 Buku Catatan",
+          "Ruled-paper dialog sheet with washi tape and soft blur",
+          "Lembar dialog bergaris kertas dengan detail selotip dan latar kabur",
+        ],
+        [
+          "assets/images/rehearsal-gallery.webp",
+          "Atmosphere Grid \u00b7 Polaroids",
+          "Galeri Suasana \u00b7 Polaroid",
+          "Tilted polaroid film frames opening into full illustration views",
+          "Bingkai film polaroid miring yang membuka pratinjau penuh",
+        ],
+      ],
+    },
+    {
+      id: "jikanda",
+      device: "desktop",
+      name: "Jikanda",
+      studio: {
+        en: "Desktop Focus Companion",
+        id: "Aplikasi Fokus Desktop",
+      },
+      url: "https://github.com/yuprananda/jikanda",
+      urlDisplay: "github.com/yuprananda/jikanda",
+      ctaLabel: {
+        en: "View on GitHub",
+        id: "Lihat di GitHub",
+      },
+      preview: "assets/images/jikanda-focus.webp",
+      previewAlt: {
+        en: "Jikanda desktop focus companion \u2014 dark Deep Focus workspace",
+        id: "Aplikasi fokus desktop Jikanda \u2014 ruang Deep Focus mode gelap",
+      },
+      eyebrow: {
+        en: "Selected work \u00b7 Desktop app",
+        id: "Karya pilihan \u00b7 Aplikasi desktop",
+      },
+      titleInk: "Jikanda",
+      description: {
+        en: "A calm, local-first desktop focus timer \u2014 Pomodoro, Deep Focus, Flow, floating mini timer, and shareable PNG session cards.",
+        id: "Timer fokus desktop yang tenang dan bekerja luring \u2014 mode Pomodoro, Deep Focus, Flow, timer mini melayang, serta ekspor kartu PNG.",
+      },
+      gallery: [
+        [
+          "assets/images/jikanda-focus.webp",
+          "Deep Focus \u00b7 Dark Workspace",
+          "Deep Focus \u00b7 Tema Gelap",
+          "50-minute countdown ring paired with session tasks and minimal controls",
+          "Cincin hitung mundur 50 menit bersama daftar tugas dan kontrol ringkas",
+        ],
+        [
+          "assets/images/jikanda-focus-light.webp",
+          "Pomodoro \u00b7 Light Theme",
+          "Pomodoro \u00b7 Tema Terang",
+          "25/5 focus cadence styled in a quiet monochrome paper palette",
+          "Ritme fokus 25/5 dalam palet monokrom terang yang lapang",
+        ],
+        [
+          "assets/images/jikanda-mini.webp",
+          "Mini Timer \u00b7 Always on Top",
+          "Timer Mini \u00b7 Melayang",
+          "Compact draggable companion window keeping the active session within reach",
+          "Jendela ringkas yang tetap mudah diakses saat bekerja di aplikasi lain",
+        ],
+        [
+          "assets/images/jikanda-history.webp",
+          "Session History \u00b7 Insights",
+          "Riwayat Sesi \u00b7 Ringkasan",
+          "Local 7-day focus summary with direct session editing and zero cloud tracking",
+          "Ringkasan fokus 7 hari lokal dengan suntingan sesi tanpa pelacakan awan",
+        ],
+        [
+          "assets/images/jikanda-cards.webp",
+          "Card Studio \u00b7 Offline Export",
+          "Studio Kartu \u00b7 Ekspor PNG",
+          "Story 9:16 and Feed 4:5 achievement card builder exported directly to disk",
+          "Pembuat kartu pencapaian Story 9:16 dan Feed 4:5 yang disimpan lokal",
+        ],
+      ],
+    },
+    {
+      id: "aku-oregairu",
+      device: "mobile",
+      name: "Aku Oregairu",
+      studio: {
+        en: "Progressive Web App \u00b7 Reader",
+        id: "Aplikasi Web Progresif (PWA)",
+      },
+      url: "https://muhammadyusufprananda.github.io/aku-oregairu/",
+      urlDisplay: "muhammadyusufprananda.github.io/aku-oregairu",
+      ctaLabel: {
+        en: "Open web app",
+        id: "Buka aplikasi",
+      },
+      preview: "assets/images/oregairu-home.webp",
+      previewAlt: {
+        en: "Aku Oregairu PWA mobile app \u2014 volume collection screen",
+        id: "Aplikasi PWA mobile Aku Oregairu \u2014 layar koleksi volume",
+      },
+      eyebrow: {
+        en: "Selected work \u00b7 Mobile PWA",
+        id: "Karya pilihan \u00b7 PWA Mobile",
+      },
+      titleInk: "Aku Oregairu",
+      description: {
+        en: "An installable bilingual light novel reader PWA \u2014 volume shelves, chapter tracking, customizable paper themes, and calm mobile typography.",
+        id: "PWA pembaca novel ringan dwibahasa yang bisa dipasang di ponsel \u2014 rak koleksi volume, riwayat baca, tema kertas, dan tipografi nyaman.",
+      },
+      gallery: [
+        [
+          "assets/images/oregairu-home.webp",
+          "Volume Collection \u00b7 Home",
+          "Koleksi Volume \u00b7 Beranda",
+          "Atmospheric Yukino hero stage introducing the bilingual Oregairu volume library",
+          "Tampilan utama beranda dengan sampul atmosferik dan daftar koleksi volume",
+        ],
+        [
+          "assets/images/oregairu-volume.webp",
+          "Volume Detail \u00b7 Chapter Index",
+          "Detail Volume \u00b7 Daftar Bab",
+          "Clean chapter index with instant Indonesian and English language switching",
+          "Daftar bab rapi dengan pilihan bahasa Indonesia dan Inggris dalam satu ketukan",
+        ],
+        [
+          "assets/images/oregairu-chapter.webp",
+          "Chapter Reader \u00b7 Paper Theme",
+          "Mode Baca \u00b7 Tema Kertas",
+          "Paginated reading view in warm paper palette with serif typography and progress indicator",
+          "Halaman baca terpaginasi dengan tema kertas hangat, huruf serif, dan penanda progres",
+        ],
+        [
+          "assets/images/oregairu-reader-alt.webp",
+          "Reader Settings \u00b7 Typography & Themes",
+          "Pengaturan Baca \u00b7 Tipografi & Tema",
+          "Floating sheet for font size, serif/sans-serif family, line height, alignment, and theme mode",
+          "Panel pengaturan ukuran huruf, jenis font, spasi baris, perataan, dan tema tampilan",
+        ],
+        [
+          "assets/images/oregairu-reader.webp",
+          "Illustration Viewer \u00b7 Lightbox",
+          "Penampil Ilustrasi \u00b7 Layar Penuh",
+          "Zoomable full-bleed cover and novel illustrations integrated smoothly inside the reader flow",
+          "Ilustrasi novel yang terintegrasi rapi di dalam alur baca bersama kontrol navigasi bab",
+        ],
+      ],
+    },
+  ];
+
+  const thoughtsData = {
+    en: {
+      headingMuted: "Thoughts in",
+      headingInk: "dialogue.",
+      sidebarTitle: "Chats",
+      sidebarSub: "Pick a topic",
+      typingStatus: "typing\u2026",
+      replayLabel: "Replay dialog",
+      backLabel: "Back to chats",
+      sidebarHint: "Tap a chat to open",
+      humanName: "Yu \u00b7 Developer",
+      contacts: [
+        {
+          id: "ai-developer",
+          icon: "sparkle",
+          name: "AI & Developer",
+          roleStatus: "online \u00b7 AI assists, Yu leads",
+          peerName: "AI",
+          time: "10:15",
+          preview: "Taste, touch, and direction stay mine.",
+          dayTag: "Today \u00b7 AI & Developer",
+          footerNote: "AI assists \u2014 taste & direction stay mine.",
+          messages: [
+            {
+              role: "peer",
+              time: "10:12",
+              text: "AI can generate interfaces and code in seconds now. Where does that leave your role as a developer?",
+            },
+            {
+              role: "human",
+              time: "10:13",
+              parts: [
+                "I never forget ",
+                { strong: "fundamentals" },
+                ", I stand by my ",
+                { strong: "philosophy" },
+                ", and I don\u2019t reject ",
+                { strong: "progress" },
+                ".",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:13",
+              text: "So you don\u2019t push AI away from your workflow?",
+            },
+            {
+              role: "human",
+              time: "10:14",
+              parts: [
+                "Not at all. ",
+                { strong: "AI is an assistant" },
+                " for exploring options and speeding up repetition\u2014yet without fundamentals, we only accept whatever it outputs.",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:14",
+              text: "Then what makes an interface feel genuinely crafted rather than generated?",
+            },
+            {
+              role: "human",
+              time: "10:15",
+              parts: [
+                "Human care. Speed comes from tools, while ",
+                { strong: "taste, touch, and direction" },
+                " remain decided by me as a developer.",
+              ],
+            },
+          ],
+        },
+        {
+          id: "why-frontend",
+          icon: "code",
+          name: "Why Frontend?",
+          roleStatus: "online \u00b7 Bridge of user & system",
+          peerName: "Reader",
+          time: "10:22",
+          preview: "Frontend bridges logic and human care.",
+          dayTag: "Today \u00b7 Why Frontend Matters",
+          footerNote: "Frontend guards the human experience.",
+          messages: [
+            {
+              role: "peer",
+              time: "10:20",
+              text: "With no-code tools and UI generators everywhere, does frontend development still matter?",
+            },
+            {
+              role: "human",
+              time: "10:20",
+              parts: [
+                "Even more than before. A screen that merely renders is very different from an ",
+                { strong: "interface real people enjoy using" },
+                ".",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:21",
+              text: "Can\u2019t AI generate responsive components quickly too?",
+            },
+            {
+              role: "human",
+              time: "10:21",
+              parts: [
+                "For common patterns, yes. Yet ",
+                { strong: "real state, accessibility, edge cases, and performance" },
+                " still need someone who truly understands the browser.",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:22",
+              text: "So what defines a frontend developer\u2019s real value today?",
+            },
+            {
+              role: "human",
+              time: "10:22",
+              parts: [
+                "Being the ",
+                { strong: "guardian of user experience" },
+                "\u2014the bridge that makes complex systems feel ",
+                { strong: "simple, fast, and human" },
+                ".",
+              ],
+            },
+          ],
+        },
+        {
+          id: "frontend-focus",
+          icon: "layers",
+          name: "Why Only Frontend",
+          roleStatus: "online \u00b7 Beyond generic screens",
+          peerName: "Reader",
+          time: "10:30",
+          preview: "Crafted by a human with full attention.",
+          dayTag: "Today \u00b7 Choosing Frontend",
+          footerNote: "Spending extra care where users touch.",
+          messages: [
+            {
+              role: "peer",
+              time: "10:28",
+              text: "AI can help with frontend, backend, even deployment now. Why still brand yourself strictly as a frontend developer?",
+            },
+            {
+              role: "human",
+              time: "10:28",
+              parts: [
+                "In this AI era, anyone can ship a product\u2014",
+                { strong: "I can do front, back, and deploy too" },
+                " with AI helping along the way.",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:29",
+              text: "Then why double down on branding yourself around frontend?",
+            },
+            {
+              role: "human",
+              time: "10:29",
+              parts: [
+                "The longer I build, the more I feel the need to ",
+                { strong: "spend more time on the front" },
+                ", because too many products now look ",
+                { strong: "generic" },
+                ".",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:30",
+              text: "What do you want people to feel from that choice?",
+            },
+            {
+              role: "human",
+              time: "10:30",
+              parts: [
+                "I want to help change that\u2014so the ",
+                { strong: "taste and touch" },
+                " I put in make people feel it was truly ",
+                { strong: "crafted by a human with full care" },
+                ".",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    id: {
+      headingMuted: "Pemikiran dalam",
+      headingInk: "ruang dialog.",
+      sidebarTitle: "Obrolan",
+      sidebarSub: "Pilih topik",
+      typingStatus: "sedang mengetik\u2026",
+      replayLabel: "Putar ulang dialog",
+      backLabel: "Kembali ke obrolan",
+      sidebarHint: "Ketuk obrolan untuk membuka",
+      humanName: "Yu \u00b7 Developer",
+      contacts: [
+        {
+          id: "ai-developer",
+          icon: "sparkle",
+          name: "AI & Developer",
+          roleStatus: "online \u00b7 AI pembantu, Yu penentu",
+          peerName: "AI",
+          time: "10:15",
+          preview: "Rasa, sentuhan, dan arah tetap milik saya.",
+          dayTag: "Hari ini \u00b7 AI & Developer",
+          footerNote: "AI pembantu \u2014 rasa & arah tetap milik Yu.",
+          messages: [
+            {
+              role: "peer",
+              time: "10:12",
+              text: "AI sekarang bisa menyusun tampilan dan kode dalam hitungan detik. Di mana posisimu sebagai developer?",
+            },
+            {
+              role: "human",
+              time: "10:13",
+              parts: [
+                "Saya orang yang tidak melupakan ",
+                { strong: "fundamental" },
+                ", berpendirian dengan ",
+                { strong: "filosofi" },
+                " yang dimiliki, dan tidak menolak ",
+                { strong: "perkembangan" },
+                ".",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:13",
+              text: "Jadi kamu tidak anti bekerja berdampingan dengan AI?",
+            },
+            {
+              role: "human",
+              time: "10:14",
+              parts: [
+                "Sama sekali tidak. ",
+                { strong: "AI adalah pembantu" },
+                " untuk draf dan eksplorasi\u2014namun tanpa fundamental, kita hanya menerima mentah-mentah keluarannya.",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:14",
+              text: "Lalu apa yang membuat karya developer tetap punya nyawa dan karakter?",
+            },
+            {
+              role: "human",
+              time: "10:15",
+              parts: [
+                "Kepekaan manusia. Alat memberi kecepatan, tapi yang menentukan ",
+                { strong: "rasa, sentuhan, dan arah" },
+                " tetaplah saya sebagai developer.",
+              ],
+            },
+          ],
+        },
+        {
+          id: "why-frontend",
+          icon: "code",
+          name: "Kenapa Frontend?",
+          roleStatus: "online \u00b7 Jembatan manusia & sistem",
+          peerName: "Tanya",
+          time: "10:22",
+          preview: "Frontend menjaga jembatan sistem & rasa.",
+          dayTag: "Hari ini \u00b7 Pentingnya Frontend",
+          footerNote: "Frontend menjaga pengalaman nyata pengguna.",
+          messages: [
+            {
+              role: "peer",
+              time: "10:20",
+              text: "Sekarang sudah banyak no-code dan generator UI. Apakah peran frontend developer masih sepenting dulu?",
+            },
+            {
+              role: "human",
+              time: "10:20",
+              parts: [
+                "Justru makin penting. Tampilan yang sekadar jadi berbeda jauh dengan ",
+                { strong: "antarmuka yang nyaman dipakai manusia sungguhan" },
+                ".",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:21",
+              text: "Bukannya AI juga bisa menyusun komponen responsif dengan cepat?",
+            },
+            {
+              role: "human",
+              time: "10:21",
+              parts: [
+                "Bisa untuk pola umum. Tapi ",
+                { strong: "state nyata, aksesibilitas, edge case, dan performa" },
+                " tetap butuh orang yang paham betul cara browser bekerja.",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:22",
+              text: "Jadi nilai utama seorang frontend developer hari ini apa?",
+            },
+            {
+              role: "human",
+              time: "10:22",
+              parts: [
+                "Menjadi ",
+                { strong: "penjaga pengalaman pengguna" },
+                "\u2014jembatan yang membuat logika sistem terasa ",
+                { strong: "sederhana, cepat, dan manusiawi" },
+                ".",
+              ],
+            },
+          ],
+        },
+        {
+          id: "frontend-focus",
+          icon: "layers",
+          name: "Fokus Frontend",
+          roleStatus: "online \u00b7 Melawan tampilan generik",
+          peerName: "Tanya",
+          time: "10:30",
+          preview: "Dibuat manusia dengan perhatian penuh.",
+          dayTag: "Hari ini \u00b7 Kenapa Hanya Frontend",
+          footerNote: "Memberi perhatian penuh di sisi terdepan.",
+          messages: [
+            {
+              role: "peer",
+              time: "10:28",
+              text: "AI bisa bantu front, back, sampai deploy. Kenapa kamu tetap memilih membranding diri sebagai frontend dev saja?",
+            },
+            {
+              role: "human",
+              time: "10:28",
+              parts: [
+                "Di era AI ini semua orang bisa membuat produk\u2014",
+                { strong: "saya pun bisa" },
+                " mengerjakan front, back, hingga deploy dengan bantuan AI.",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:29",
+              text: "Lalu kenapa justru tetap fokus membranding diri di bagian front?",
+            },
+            {
+              role: "human",
+              time: "10:29",
+              parts: [
+                "Makin ke sini saya justru merasa perlu ",
+                { strong: "menghabiskan waktu lebih lama di front" },
+                ", karena sekarang semakin banyak ",
+                { strong: "tampilan yang terasa generik" },
+                ".",
+              ],
+            },
+            {
+              role: "peer",
+              time: "10:30",
+              text: "Harapan apa yang ingin kamu bawa lewat fokus itu?",
+            },
+            {
+              role: "human",
+              time: "10:30",
+              parts: [
+                "Saya ingin ikut membantu mengubahnya\u2014agar ",
+                { strong: "rasa dan sentuhan" },
+                " yang saya beri membuat orang merasa karya ini ",
+                { strong: "dibuat manusia dengan perhatian penuh" },
+                ".",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  };
+
   Object.assign(window.Portfolio, {
     copy,
     galleryImages,
     serviceGroups,
     projects,
+    featuredProjects,
     techStack,
     heroText,
+    thoughtsData,
     contactMeta,
   });
 })();

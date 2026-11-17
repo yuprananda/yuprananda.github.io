@@ -3,24 +3,45 @@
   "use strict";
   const {
     renderPortrait,
+    renderProjectPreview,
     siteConfig,
     copy,
     serviceGroups,
+    featuredProjects,
     techStack,
     heroText,
+    thoughtsData,
     contactMeta,
     serviceIcons,
   } = window.Portfolio;
   let activeTechDevice = "web";
+  let selectedProject = 0;
+  let activeFilmIndex = 0;
   let copyResetTimer = null;
 
-  const ids = ["intro", "services", "tech", "work", "contact"];
+  const ids = ["hello", "philosophy", "tech", "projects", "thoughts", "contact"];
+  const hashAliases = {
+    intro: "hello",
+    halo: "hello",
+    services: "philosophy",
+    filosofi: "philosophy",
+    teknologi: "tech",
+    work: "projects",
+    proyek: "projects",
+    ai: "thoughts",
+    kontak: "contact",
+  };
+  function resolveSlideIndex(hash) {
+    const raw = (hash || "").replace(/^#/, "").toLowerCase();
+    const slug = hashAliases[raw] || raw;
+    return Math.max(0, ids.indexOf(slug));
+  }
   let lang;
   try {
     lang = localStorage.getItem("language");
   } catch {}
   lang = lang === "id" ? "id" : "en";
-  let current = Math.max(0, ids.indexOf(location.hash.slice(1))),
+  let current = resolveSlideIndex(location.hash),
     locked = false;
   const pages = document.querySelector("#pages");
   const prev = document.querySelector("#prev");
@@ -47,7 +68,7 @@
     return `<div class="philosophy-pillars" role="list">${groups.map((g, i) => `<article class="philosophy-pillar${i === targetPhilosophy ? " is-selected" : ""}" data-pillar="${i}" tabindex="0" role="listitem"><div class="pillar-top"><div class="pillar-meta"><span class="pillar-dot" aria-hidden="true"></span><span class="pillar-index">0${i + 1}</span><span class="pillar-sep">&middot;</span><span class="pillar-key">${g[0]}</span></div><div class="pillar-viz" aria-hidden="true"><svg viewBox="0 0 48 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${serviceIcons[i]}</svg></div></div><h2 class="pillar-title">${g[1]}</h2><div class="pillar-collapse"><div class="pillar-collapse-inner"><p>${g[2]}</p></div></div></article>`).join("")}</div>`;
   }
   function applyPhilosophySelectedPillar() {
-    const section = document.querySelector("#services");
+    const section = document.querySelector("#philosophy");
     if (!section) return;
     section.querySelectorAll(".philosophy-pillar").forEach((el, i) => {
       el.classList.toggle("is-selected", i === targetPhilosophy);
@@ -55,7 +76,7 @@
   }
   function applyPhilosophyDom() {
     const groups = serviceGroups[lang];
-    const section = document.querySelector("#services");
+    const section = document.querySelector("#philosophy");
     if (!section || !groups) return;
     const item = groups[activePhilosophy];
     section.dataset.pillar = String(activePhilosophy);
@@ -70,13 +91,13 @@
     applyPhilosophySelectedPillar();
   }
   function applyPhilosophyDragClasses() {
-    const inspector = document.querySelector("#services .phil-inspector");
+    const inspector = document.querySelector("#philosophy .phil-inspector");
     if (!inspector) return;
     inspector.dataset.phase = philDragPhase;
   }
   function syncPhilosophy(reset = false) {
     clearTimeout(philosophyTimer);
-    const section = document.querySelector("#services");
+    const section = document.querySelector("#philosophy");
     if (!section) return;
     if (reset) {
       philDragPhase = "hold";
@@ -158,7 +179,7 @@
     "(hover: none), (max-width: 700px)",
   );
   function closePhilosophyPopover() {
-    const open = document.querySelector("#services .phil-inspector.is-hovered");
+    const open = document.querySelector("#philosophy .phil-inspector.is-hovered");
     if (open) {
       open.classList.remove("is-hovered");
     }
@@ -578,12 +599,162 @@
     positionTechPointer(activeTechDevice, true),
   );
 
-  // PROJECTS: Simple centered under-maintenance screen.
+  // PROJECTS: folder overview on the left + hardware device mockup (laptop for web, monitor for desktop) on the right.
+  function activeWorkProject() {
+    const list = Array.isArray(featuredProjects) ? featuredProjects : [];
+    return list[selectedProject] || list[0];
+  }
+  function activeWorkFrames(project = activeWorkProject()) {
+    if (!project) return [];
+    if (Array.isArray(project.gallery) && project.gallery.length) {
+      return project.gallery;
+    }
+    return project.preview
+      ? [[project.preview, project.name, project.name, "", ""]]
+      : [];
+  }
+  function updateWorkFrameDom() {
+    const section = document.querySelector("#projects");
+    const project = activeWorkProject();
+    const frames = activeWorkFrames(project);
+    if (!section || !project || !frames.length) return;
+    const isId = lang === "id";
+    const total = frames.length;
+    activeFilmIndex = ((activeFilmIndex % total) + total) % total;
+    const frame = frames[activeFilmIndex];
+    const title = frame[isId ? 2 : 1] || project.name;
+
+    const trigger = section.querySelector(".work-device-trigger");
+    const img = section.querySelector(".work-img");
+    if (img) {
+      img.src = frame[0];
+      img.alt = title;
+    }
+    if (trigger) {
+      trigger.setAttribute(
+        "aria-label",
+        isId ? `Buka galeri ${project.name}: ${title}` : `Open ${project.name} gallery: ${title}`,
+      );
+    }
+  }
+  function setActiveFilm(index) {
+    const frames = activeWorkFrames();
+    if (!frames.length) return;
+    activeFilmIndex = ((index % frames.length) + frames.length) % frames.length;
+    updateWorkFrameDom();
+  }
+  function renderWorkDeviceMockup(project, activeFrame, activeTitle) {
+    const isId = lang === "id";
+    const deviceType =
+      project.device === "desktop"
+        ? "desktop"
+        : project.device === "mobile"
+          ? "mobile"
+          : "laptop";
+    const zoomHintSvg =
+      '<span class="work-screen-hint" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9.2 6.8M2.5 13.5l4.3-4.3"/></svg></span>';
+    const dim = deviceType === "mobile" ? 'width="1170" height="2532"' : 'width="1600" height="1000"';
+    const screenImg = `<img class="work-img" src="${activeFrame[0]}" alt="${escapeAttr(activeTitle)}" ${dim}>${zoomHintSvg}`;
+    const ariaLabel = escapeAttr(
+      isId
+        ? `Buka galeri ${project.name}: ${activeTitle}`
+        : `Open ${project.name} gallery: ${activeTitle}`,
+    );
+
+    if (deviceType === "mobile") {
+      return `<button type="button" class="work-device-trigger is-mobile" aria-haspopup="dialog" aria-label="${ariaLabel}">
+        <div class="work-mockup-phone">
+          <span class="work-phone-btn is-vol-up" aria-hidden="true"></span>
+          <span class="work-phone-btn is-vol-down" aria-hidden="true"></span>
+          <span class="work-phone-btn is-power" aria-hidden="true"></span>
+          <div class="work-phone-top" aria-hidden="true"><span class="work-phone-speaker"></span></div>
+          <div class="work-phone-screen">${screenImg}</div>
+          <div class="work-phone-home" aria-hidden="true"><span></span></div>
+        </div>
+      </button>`;
+    }
+
+    if (deviceType === "desktop") {
+      return `<button type="button" class="work-device-trigger is-desktop" aria-haspopup="dialog" aria-label="${ariaLabel}">
+        <div class="work-mockup-monitor">
+          <div class="work-monitor-frame">
+            <span class="work-monitor-cam" aria-hidden="true"></span>
+            <div class="work-monitor-screen">${screenImg}</div>
+          </div>
+          <div class="work-monitor-stand" aria-hidden="true">
+            <div class="work-monitor-neck"></div>
+            <div class="work-monitor-foot"></div>
+          </div>
+        </div>
+      </button>`;
+    }
+
+    return `<button type="button" class="work-device-trigger is-laptop" aria-haspopup="dialog" aria-label="${ariaLabel}">
+      <div class="work-mockup-laptop">
+        <div class="work-laptop-lid">
+          <span class="work-laptop-cam" aria-hidden="true"></span>
+          <div class="work-laptop-screen">${screenImg}</div>
+        </div>
+        <div class="work-laptop-base" aria-hidden="true">
+          <span class="work-laptop-notch"></span>
+        </div>
+      </div>
+    </button>`;
+  }
   function renderWorkPage(slideMeta) {
-    return `<div class="work-maintenance">
-      <p class="eyebrow work-eyebrow">${slideMeta[0]}</p>
-      <h1 class="work-maint-title">${slideMeta[1]}</h1>
-      <p class="work-maint-note">${slideMeta[2]}</p>
+    const list = Array.isArray(featuredProjects) ? featuredProjects : [];
+    const project = activeWorkProject();
+    if (!project) {
+      return `<div class="work-maintenance">
+        <p class="eyebrow work-eyebrow">${slideMeta[0]}</p>
+        <h1 class="work-maint-title">${slideMeta[1]}</h1>
+        <p class="work-maint-note">${slideMeta[2]}</p>
+      </div>`;
+    }
+    const frames = activeWorkFrames(project);
+    const total = frames.length;
+    activeFilmIndex = total ? ((activeFilmIndex % total) + total) % total : 0;
+    const isId = lang === "id";
+    const switcher =
+      list.length > 1
+        ? `<div class="work-folder-tabs" role="group" aria-label="${isId ? "Pilih proyek" : "Choose a project"}">${list
+            .map(
+              (item, i) =>
+                `<button type="button" class="work-tab" data-project="${i}" aria-pressed="${i === selectedProject}"><span class="work-tab-num">0${i + 1}</span><span>${item.name}</span></button>`,
+            )
+            .join("")}</div>`
+        : "";
+    const eyebrow = project.eyebrow?.[lang] || slideMeta[0];
+    const description = project.description?.[lang] || slideMeta[2] || "";
+    const visitLabel =
+      project.ctaLabel?.[lang] || (isId ? "Kunjungi situs" : "Visit live site");
+    const studioText =
+      typeof project.studio === "object"
+        ? project.studio?.[lang] || project.studio?.en || ""
+        : project.studio || "";
+    const activeFrame = frames[activeFilmIndex] || [];
+    const activeTitle = activeFrame[isId ? 2 : 1] || project.name;
+
+    return `<div class="work-shell">
+      <div class="work-folder" data-active-project="${selectedProject}">
+        ${switcher}
+        <div class="work-folder-body">
+          <p class="eyebrow work-eyebrow">${eyebrow}</p>
+          <h1 class="work-title">
+            <span class="sr-only">${project.name}${studioText ? ` — ${studioText}` : ""}</span>
+            <span aria-hidden="true" class="work-title-line">
+              <span class="work-title-ink">${project.titleInk || project.name}</span>
+              ${studioText ? `<span class="work-title-muted">${studioText}</span>` : ""}
+            </span>
+          </h1>
+          <p class="work-lead">${description}</p>
+          ${project.url ? `<div class="work-actions"><a class="work-link" href="${project.url}" target="_blank" rel="noopener noreferrer"><span>${visitLabel}</span><span class="work-arrow" aria-hidden="true">&#8599;</span></a></div>` : ""}
+        </div>
+      </div>
+
+      <div class="work-showcase">
+        ${renderWorkDeviceMockup(project, activeFrame, activeTitle)}
+      </div>
     </div>`;
   }
 
@@ -721,7 +892,7 @@
   }
   function syncPortraitBubble() {
     clearTimeout(bubbleAutoTimer);
-    const frame = document.querySelector("#intro .portrait-frame");
+    const frame = document.querySelector("#hello .portrait-frame");
     if (!frame) return;
     if (current !== 0 || document.hidden) {
       stopBubbleTyping(frame);
@@ -1078,6 +1249,309 @@
     }
   });
 
+  // THOUGHTS: WhatsApp / Telegram-inspired two-pane messenger with contact threads on the left & sequential chat on the right.
+  const mobileThoughtsQuery = window.matchMedia("(max-width: 760px)");
+  let selectedThought = 0;
+  let thoughtsMobileOpen = false;
+  const visitedThoughts = new Set(mobileThoughtsQuery.matches ? [] : [0]);
+  let thoughtsSeqTimers = [];
+  let thoughtsWasActive = false;
+  let thoughtsAutoScroll = true;
+  let thoughtsProgrammaticScroll = false;
+
+  function thoughtContactIcon(iconName) {
+    if (iconName === "code") {
+      return '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.4 4.5 2 8l3.4 3.5M10.6 4.5 14 8l-3.4 3.5M9.1 3.2 6.9 12.8"/></svg>';
+    }
+    if (iconName === "layers") {
+      return '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.2" y="2.6" width="11.6" height="10.8" rx="2.2"/><path d="M2.2 5.6h11.6M5.4 8.6h5.2M5.4 10.9h3.4"/></svg>';
+    }
+    return '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.8 9.4 6.6 14.2 8 9.4 9.4 8 14.2 6.6 9.4 1.8 8l4.8-1.4L8 1.8Z"/></svg>';
+  }
+
+  function activeThoughtData() {
+    const data = thoughtsData[lang];
+    const contacts = data.contacts || [];
+    const safeIdx = Math.max(0, Math.min(contacts.length - 1, selectedThought));
+    return {
+      data,
+      contacts,
+      safeIdx,
+      contact: contacts[safeIdx] || contacts[0],
+    };
+  }
+
+  function renderThoughtBubbleBody(msg) {
+    if (Array.isArray(msg.parts)) {
+      return msg.parts
+        .map((part) =>
+          typeof part === "string"
+            ? escapeHtml(part)
+            : `<strong>${escapeHtml(part.strong)}</strong>`,
+        )
+        .join("");
+    }
+    return escapeHtml(msg.text || "");
+  }
+
+  function renderThoughtMessages(data, contact) {
+    const list = contact.messages || [];
+    const icon = thoughtContactIcon(contact.icon);
+    const instantClass = heroMotion.matches ? " is-visible" : "";
+    const checksSvg =
+      '<svg class="thoughts-checks" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m1.4 5.8 2.7 2.8L9.6 2.2"/><path d="m6.2 6.2 2.4 2.4 5.8-6.4"/></svg>';
+
+    const dayHtml = `<div class="thoughts-day-wrap"><span class="thoughts-day-pill">${escapeHtml(contact.dayTag)}</span></div>`;
+    const msgsHtml = list
+      .map((msg, idx) => {
+        const isPeer = msg.role !== "human";
+        return `<div class="thoughts-msg ${isPeer ? "is-peer" : "is-human"}${instantClass}" data-thought-msg="${idx}" data-role="${isPeer ? "peer" : "human"}">
+          <div class="thoughts-msg-meta">
+            ${isPeer ? `<span class="thoughts-avatar is-peer" aria-hidden="true">${icon}</span><span class="thoughts-sender">${escapeHtml(contact.peerName)}</span>` : `<span class="thoughts-sender">${escapeHtml(data.humanName)}</span><span class="thoughts-avatar is-human" aria-hidden="true">${escapeHtml(siteConfig.name.charAt(0))}</span>`}
+          </div>
+          <div class="thoughts-bubble">
+            <p>${renderThoughtBubbleBody(msg)}</p>
+            <div class="thoughts-bubble-meta">
+              <span class="thoughts-time">${escapeHtml(msg.time || "")}</span>
+              ${isPeer ? "" : checksSvg}
+            </div>
+          </div>
+        </div>`;
+      })
+      .join("");
+    const typingHtml = `<div class="thoughts-msg thoughts-typing is-peer" hidden aria-hidden="true">
+      <div class="thoughts-msg-meta">
+        <span class="thoughts-avatar is-peer">${icon}</span>
+        <span class="thoughts-sender">${escapeHtml(contact.peerName)}</span>
+      </div>
+      <div class="thoughts-bubble thoughts-typing-bubble">
+        <span class="thoughts-typing-dots"><span></span><span></span><span></span></span>
+      </div>
+    </div>`;
+    return `${dayHtml}${msgsHtml}${typingHtml}`;
+  }
+
+  function clearThoughtsTimers() {
+    thoughtsSeqTimers.forEach((id) => clearTimeout(id));
+    thoughtsSeqTimers = [];
+  }
+
+  function setThoughtHeaderStatus(isTyping) {
+    const statusEl = document.querySelector("#thoughts .thoughts-chat-status");
+    const statusWrap = document.querySelector("#thoughts .thoughts-chat-header");
+    if (!statusEl) return;
+    const { data, contact } = activeThoughtData();
+    statusEl.textContent = isTyping ? data.typingStatus : contact.roleStatus;
+    if (statusWrap) statusWrap.classList.toggle("is-typing", isTyping);
+  }
+
+  function scrollThoughtsToBottom(smooth = true) {
+    const stream = document.querySelector("#thoughts .thoughts-chat-stream");
+    if (!stream || !thoughtsAutoScroll) return;
+    thoughtsProgrammaticScroll = true;
+    stream.scrollTo({
+      top: stream.scrollHeight,
+      behavior: smooth && !heroMotion.matches ? "smooth" : "auto",
+    });
+    setTimeout(() => {
+      thoughtsProgrammaticScroll = false;
+    }, 360);
+  }
+
+  function setThoughtTypingState(typingEl, role) {
+    if (!typingEl) return;
+    const { data, contact } = activeThoughtData();
+    const isPeer = role !== "human";
+    typingEl.classList.toggle("is-peer", isPeer);
+    typingEl.classList.toggle("is-human", !isPeer);
+    const meta = typingEl.querySelector(".thoughts-msg-meta");
+    if (meta) {
+      meta.innerHTML = isPeer
+        ? `<span class="thoughts-avatar is-peer">${thoughtContactIcon(contact.icon)}</span><span class="thoughts-sender">${escapeHtml(contact.peerName)}</span>`
+        : `<span class="thoughts-sender">${escapeHtml(data.humanName)}</span><span class="thoughts-avatar is-human">${escapeHtml(siteConfig.name.charAt(0))}</span>`;
+    }
+    typingEl.hidden = false;
+    setThoughtHeaderStatus(true);
+    scrollThoughtsToBottom(true);
+  }
+
+  function startThoughtsSequence() {
+    clearThoughtsTimers();
+    const stream = document.querySelector("#thoughts .thoughts-chat-stream");
+    if (!stream) return;
+    const msgs = [...stream.querySelectorAll("[data-thought-msg]")];
+    const typingEl = stream.querySelector(".thoughts-typing");
+    thoughtsAutoScroll = true;
+
+    if (heroMotion.matches) {
+      if (typingEl) typingEl.hidden = true;
+      msgs.forEach((m) => m.classList.add("is-visible"));
+      stream.scrollTop = 0;
+      setThoughtHeaderStatus(false);
+      return;
+    }
+
+    msgs.forEach((m) => m.classList.remove("is-visible"));
+    if (typingEl) typingEl.hidden = true;
+    stream.scrollTop = 0;
+    setThoughtHeaderStatus(false);
+
+    let elapsed = 120;
+    msgs.forEach((msgEl, idx) => {
+      const role = msgEl.dataset.role || "peer";
+      const typingMs = role === "peer" ? 400 : 580;
+      const pauseBeforeMs = idx === 0 ? 0 : 360;
+
+      elapsed += pauseBeforeMs;
+      const showTypingAt = elapsed;
+      const showMsgAt = elapsed + typingMs;
+      elapsed = showMsgAt;
+
+      thoughtsSeqTimers.push(
+        setTimeout(() => {
+          if (current !== ids.indexOf("thoughts")) return;
+          setThoughtTypingState(typingEl, role);
+        }, showTypingAt),
+      );
+
+      thoughtsSeqTimers.push(
+        setTimeout(() => {
+          if (current !== ids.indexOf("thoughts")) return;
+          if (typingEl) typingEl.hidden = true;
+          msgEl.classList.add("is-visible");
+          if (idx === msgs.length - 1) {
+            setThoughtHeaderStatus(false);
+          }
+          scrollThoughtsToBottom(true);
+        }, showMsgAt),
+      );
+    });
+  }
+
+  function syncThoughtsAnimation(reset = false) {
+    const isThoughtsActive = current === ids.indexOf("thoughts");
+    if (!isThoughtsActive) {
+      clearThoughtsTimers();
+      const typingEl = document.querySelector("#thoughts .thoughts-typing");
+      if (typingEl) typingEl.hidden = true;
+      setThoughtHeaderStatus(false);
+      thoughtsWasActive = false;
+      return;
+    }
+    if (mobileThoughtsQuery.matches && !thoughtsMobileOpen) {
+      clearThoughtsTimers();
+      thoughtsWasActive = true;
+      return;
+    }
+    if (reset || !thoughtsWasActive) {
+      thoughtsWasActive = true;
+      startThoughtsSequence();
+    }
+  }
+
+  function replayThoughtsStream() {
+    if (current !== ids.indexOf("thoughts")) return;
+    startThoughtsSequence();
+  }
+
+  function renderThoughtsMessenger() {
+    const { data, contacts, safeIdx, contact } = activeThoughtData();
+    const backIcon =
+      '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.2 3.2 5.4 8l4.8 4.8"/></svg>';
+    const replayIcon =
+      '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.2 8a5.2 5.2 0 1 1-1.42-3.58"/><path d="M13.5 2.6v2.7h-2.7"/></svg>';
+    const sendArrowIcon =
+      '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12.5V3.5M4.2 7.2 8 3.4l3.8 3.8"/></svg>';
+
+    return `<aside class="thoughts-sidebar" aria-label="${escapeAttr(data.sidebarTitle)}">
+        <div class="thoughts-sidebar-head">
+          <div class="thoughts-sidebar-title-wrap">
+            <span class="thoughts-sidebar-title">${escapeHtml(data.sidebarTitle)}</span>
+            <span class="thoughts-sidebar-sub">${escapeHtml(data.sidebarSub)}</span>
+          </div>
+          <span class="thoughts-sidebar-count">${contacts.length}</span>
+        </div>
+        <div class="thoughts-contact-list" role="tablist" aria-label="${escapeAttr(data.sidebarTitle)}">
+          ${contacts
+            .map((item, idx) => {
+              const isActive = idx === safeIdx;
+              const isUnread = !visitedThoughts.has(idx);
+              return `<button type="button" class="thoughts-contact${isActive ? " is-active" : ""}" data-thought-contact="${idx}" role="tab" aria-selected="${isActive}">
+                <span class="thoughts-contact-avatar" aria-hidden="true">
+                  ${thoughtContactIcon(item.icon)}
+                  ${isActive ? '<span class="thoughts-contact-online"></span>' : ""}
+                </span>
+                <span class="thoughts-contact-body">
+                  <span class="thoughts-contact-top">
+                    <span class="thoughts-contact-name">${escapeHtml(item.name)}</span>
+                    <span class="thoughts-contact-time">${escapeHtml(item.time)}</span>
+                  </span>
+                  <span class="thoughts-contact-bottom">
+                    <span class="thoughts-contact-preview">${escapeHtml(item.preview)}</span>
+                    ${isUnread ? '<span class="thoughts-unread-badge" aria-hidden="true">1</span>' : ""}
+                  </span>
+                </span>
+              </button>`;
+            })
+            .join("")}
+        </div>
+        <div class="thoughts-sidebar-foot" aria-hidden="true">
+          <span>${escapeHtml(data.sidebarHint)}</span>
+        </div>
+      </aside>
+      <div class="thoughts-main" role="tabpanel" aria-label="${escapeAttr(contact.name)}">
+        <div class="thoughts-chat-header">
+          <div class="thoughts-chat-peer">
+            <button type="button" class="thoughts-back-btn" data-thought-back aria-label="${escapeAttr(data.backLabel)}" title="${escapeAttr(data.backLabel)}">
+              ${backIcon}
+            </button>
+            <span class="thoughts-chat-avatar" aria-hidden="true">${thoughtContactIcon(contact.icon)}</span>
+            <div class="thoughts-chat-peer-copy">
+              <span class="thoughts-chat-name">${escapeHtml(contact.name)}</span>
+              <span class="thoughts-chat-status">${escapeHtml(contact.roleStatus)}</span>
+            </div>
+          </div>
+          <button type="button" class="thoughts-replay-btn" data-thought-replay aria-label="${escapeAttr(data.replayLabel)}" title="${escapeAttr(data.replayLabel)}">
+            ${replayIcon}
+          </button>
+        </div>
+        <div class="thoughts-chat-stream" aria-live="polite">
+          ${renderThoughtMessages(data, contact)}
+        </div>
+        <div class="thoughts-chat-footer">
+          <div class="thoughts-footer-bar">
+            <span class="thoughts-footer-note">${escapeHtml(contact.footerNote)}</span>
+            <span class="thoughts-footer-arrow" aria-hidden="true">${sendArrowIcon}</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderThoughtsPage(slideMeta) {
+    const { data, contacts } = activeThoughtData();
+    return `<div class="thoughts-shell">
+      <div class="thoughts-top-bar">
+        <div class="thoughts-top-heading">
+          <p class="eyebrow thoughts-eyebrow">${slideMeta[0]}</p>
+          <h1 class="thoughts-title">
+            <span class="sr-only">${slideMeta[1]}</span>
+            <span aria-hidden="true" class="thoughts-title-lines">
+              <span class="thoughts-title-muted">${escapeHtml(data.headingMuted)}</span>
+              <span class="thoughts-title-ink">${escapeHtml(data.headingInk)}</span>
+            </span>
+          </h1>
+        </div>
+        <span class="thoughts-count-pill" aria-hidden="true">
+          <span class="thoughts-count-dot"></span>
+          <span>${contacts.length} ${escapeHtml(data.sidebarTitle)}</span>
+        </span>
+      </div>
+      <div class="thoughts-messenger${thoughtsMobileOpen ? " is-mobile-chat" : ""}">
+        ${renderThoughtsMessenger()}
+      </div>
+    </div>`;
+  }
+
   // RENDER: language changes replace only the page tree. Event delegation survives these replacements.
   function render() {
     pages.classList.add("is-translating");
@@ -1096,8 +1570,11 @@
         if (ids[i] === "tech") {
           return `<section id="tech" aria-label="${c.nav[i]}">${renderTechPage(s)}</section>`;
         }
-        if (ids[i] === "work") {
-          return `<section id="work" aria-label="${c.nav[i]}">${renderWorkPage(s)}</section>`;
+        if (ids[i] === "projects") {
+          return `<section id="projects" aria-label="${c.nav[i]}">${renderWorkPage(s)}</section>`;
+        }
+        if (ids[i] === "thoughts") {
+          return `<section id="thoughts" aria-label="${c.nav[i]}">${renderThoughtsPage(s)}</section>`;
         }
         if (ids[i] === "contact") {
           return `<section id="contact" aria-label="${c.nav[i]}">${renderContactPage(s)}</section>`;
@@ -1106,7 +1583,7 @@
           .slice(2)
           .map((t, j) =>
             i === 0 && j === 1
-              ? `<a class="action" href="#services"><span>${t}</span><span class="action-arrow" aria-hidden="true">&rarr;</span></a>`
+              ? `<a class="action" href="#philosophy"><span>${t}</span><span class="action-arrow" aria-hidden="true">&rarr;</span></a>`
               : i === 1 && j === 0
                 ? `<p class="philosophy-lead">${t}</p>`
                 : t.includes("|")
@@ -1129,6 +1606,8 @@
     syncPhilosophy(true);
     syncTechTitleAnimation(true);
     syncContactAnimation(true);
+    clearThoughtsTimers();
+    thoughtsWasActive = false;
     update();
     void pages.offsetWidth;
     pages.classList.remove("is-translating");
@@ -1138,7 +1617,7 @@
     syncHeroAnimation();
     syncPortraitBubble();
     syncPhilosophy();
-    if (current !== ids.indexOf("services")) {
+    if (current !== ids.indexOf("philosophy")) {
       closePhilosophyPopover();
     }
     syncTechTitleAnimation();
@@ -1150,6 +1629,7 @@
       p.setAttribute("aria-hidden", i !== current);
       p.style.transform = `translateX(${(i - current) * 100}%)`;
     });
+    syncThoughtsAnimation();
     const progress = ((current + 1) / ids.length) * 100;
     document.querySelector("#position").innerHTML =
       `<span class="pos-current">0${current + 1}</span><span class="pos-total"> / ${String(ids.length).padStart(2, "0")}</span><span class="pos-bar" aria-hidden="true"><span class="pos-fill" style="width:${progress}%"></span></span>`;
@@ -1174,7 +1654,7 @@
   prev.onclick = () => go(current - 1);
   next.onclick = () => go(current + 1);
   window.onhashchange = () => {
-    current = Math.max(0, ids.indexOf(location.hash.slice(1)));
+    current = resolveSlideIndex(location.hash);
     update();
   };
   document.querySelectorAll("[data-lang]").forEach(
@@ -1203,27 +1683,144 @@
   window.addEventListener(
     "touchend",
     (e) => {
-      if (locked || touchFromField) return;
-      let d = x - e.changedTouches[0].clientX;
+      if (locked || touchFromField || gallery.open) return;
+      const d = x - e.changedTouches[0].clientX;
       const dy = y - e.changedTouches[0].clientY;
       if (Math.abs(d) > 45 && Math.abs(d) > Math.abs(dy))
         go(current + Math.sign(d));
     },
     { passive: true },
   );
+
+  // GALLERY: native dialog handles focus trapping/Escape. Animation completes before close restores focus.
+  const gallery = document.createElement("dialog");
+  gallery.id = "project-gallery";
+  gallery.setAttribute("aria-labelledby", "gallery-title");
+  gallery.innerHTML =
+    '<div class="gallery-top"><div class="mac-window-controls"><button type="button" class="gallery-close mac-control mac-close" aria-label="Close gallery"><span aria-hidden="true">&times;</span></button><span class="mac-control mac-minimize" aria-hidden="true"></span><button type="button" class="gallery-expand mac-control mac-expand" aria-label="Expand gallery" aria-pressed="false"><span aria-hidden="true">&#8599;</span></button></div><span id="gallery-title"></span><span class="mac-window-detail" aria-hidden="true">Preview</span></div><div class="gallery-image"><img width="1600" height="1000" alt=""></div><div class="gallery-bottom"><button type="button" class="gallery-prev" aria-label="Previous image">&#8592;</button><div class="gallery-caption" aria-live="polite"></div><button type="button" class="gallery-next" aria-label="Next image">&#8594;</button></div>';
+  document.body.append(gallery);
+  let galleryIndex = 0,
+    galleryTrigger,
+    galleryClosing = false;
+
+  function activeGalleryImages() {
+    return activeWorkFrames();
+  }
+  function showGalleryImage(index) {
+    const images = activeGalleryImages();
+    if (!images.length) return;
+    const project = activeWorkProject();
+    const isPhone = project?.device === "mobile";
+    galleryIndex = (index + images.length) % images.length;
+    setActiveFilm(galleryIndex);
+    const item = images[galleryIndex];
+    const isId = lang === "id";
+    const label = item[isId ? 2 : 1];
+    const note = item[isId ? 4 : 3] || "";
+    const img = gallery.querySelector("img");
+    img.width = isPhone ? 1170 : 1600;
+    img.height = isPhone ? 2532 : 1000;
+    img.src = item[0];
+    img.alt = label;
+    gallery.querySelector(".gallery-caption").innerHTML =
+      `<strong class="gallery-cap-title">${galleryIndex + 1} / ${images.length} \u2014 ${escapeHtml(label)}</strong>${note ? `<span class="gallery-cap-note">${escapeHtml(note)}</span>` : ""}`;
+  }
+  function openGallery(trigger, startIndex = 0) {
+    const images = activeGalleryImages();
+    if (!images.length || gallery.open || galleryClosing) return;
+    const project = activeWorkProject();
+    const isPhone = project?.device === "mobile";
+    const isId = lang === "id";
+    galleryTrigger = trigger;
+    gallery.classList.toggle("is-phone-modal", isPhone);
+    if (isPhone) {
+      gallery.classList.remove("is-expanded");
+      const expandBtn = gallery.querySelector(".gallery-expand");
+      expandBtn?.setAttribute("aria-pressed", "false");
+    }
+    gallery.querySelector("#gallery-title").textContent = project?.name || siteConfig.project.name;
+    gallery.querySelector(".mac-window-detail").textContent = isId ? "Pratinjau" : "Preview";
+    gallery.querySelector(".gallery-prev").setAttribute("aria-label", isId ? "Layar sebelumnya" : "Previous image");
+    gallery.querySelector(".gallery-next").setAttribute("aria-label", isId ? "Layar berikutnya" : "Next image");
+    showGalleryImage(startIndex);
+    gallery.showModal();
+    if (!heroMotion.matches) {
+      gallery.animate(
+        [
+          { opacity: 0, transform: "translateY(18px) scale(.95)" },
+          { opacity: 1, transform: "translateY(0) scale(1)" },
+        ],
+        { duration: 320, easing: "cubic-bezier(.22,1,.36,1)" },
+      );
+    }
+  }
+  async function closeGallery() {
+    if (!gallery.open || galleryClosing) return;
+    galleryClosing = true;
+    if (!heroMotion.matches) {
+      gallery.classList.add("is-closing");
+      try {
+        await gallery.animate(
+          [
+            { opacity: 1, transform: "translateY(0) scale(1)" },
+            { opacity: 0, transform: "translateY(10px) scale(.97)" },
+          ],
+          { duration: 180, easing: "ease-in", fill: "forwards" },
+        ).finished;
+      } catch {}
+    }
+    gallery.close();
+    gallery.getAnimations().forEach((animation) => animation.cancel());
+    gallery.classList.remove("is-closing");
+    galleryClosing = false;
+  }
+  gallery.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeGallery();
+  });
+  gallery.addEventListener("click", (event) => {
+    if (event.target === gallery) closeGallery();
+  });
+  gallery.querySelector(".gallery-close").onclick = closeGallery;
+  gallery.querySelector(".gallery-expand").onclick = () => {
+    const expanded = gallery.classList.toggle("is-expanded");
+    const button = gallery.querySelector(".gallery-expand");
+    button.setAttribute("aria-pressed", expanded);
+    button.setAttribute(
+      "aria-label",
+      expanded ? "Restore gallery size" : "Expand gallery",
+    );
+  };
+  gallery.querySelector(".gallery-prev").onclick = () =>
+    showGalleryImage(galleryIndex - 1);
+  gallery.querySelector(".gallery-next").onclick = () =>
+    showGalleryImage(galleryIndex + 1);
+  gallery.addEventListener("close", () => {
+    gallery.classList.remove("is-phone-modal");
+    if (galleryTrigger?.classList.contains("work-device-trigger")) {
+      document
+        .querySelector("#projects .work-device-trigger")
+        ?.focus({ preventScroll: true });
+      return;
+    }
+    galleryTrigger?.focus();
+  });
+
   render();
 
   // Keep fragment navigation from scrolling the clipped carousel container.
   document.addEventListener("click", (event) => {
     const link = event.target.closest('a[href^="#"]');
     if (!link) return;
-    const index = ids.indexOf(link.getAttribute("href").slice(1));
+    const rawSlug = link.getAttribute("href").slice(1).toLowerCase();
+    const canonical = hashAliases[rawSlug] || rawSlug;
+    const index = ids.indexOf(canonical);
     if (index < 0) return;
     event.preventDefault();
     go(index);
   });
   window.addEventListener("popstate", () => {
-    current = Math.max(0, ids.indexOf(location.hash.slice(1)));
+    current = resolveSlideIndex(location.hash);
     update();
   });
   window.addEventListener("load", () => {
@@ -1234,6 +1831,16 @@
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closePhilosophyPopover();
+      return;
+    }
+    if (gallery.open) {
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        showGalleryImage(galleryIndex + 1);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        showGalleryImage(galleryIndex - 1);
+      }
       return;
     }
     if (e.target.closest("input, textarea, [contenteditable]")) return;
@@ -1249,7 +1856,82 @@
     }
   });
 
+  pages.addEventListener(
+    "scroll",
+    (event) => {
+      const stream = event.target;
+      if (
+        !thoughtsProgrammaticScroll &&
+        stream instanceof Element &&
+        stream.classList.contains("thoughts-chat-stream")
+      ) {
+        const distFromBottom =
+          stream.scrollHeight - stream.scrollTop - stream.clientHeight;
+        thoughtsAutoScroll = distFromBottom <= 36;
+      }
+    },
+    { capture: true, passive: true },
+  );
+
   document.addEventListener("click", (event) => {
+    const projectBtn = event.target.closest("[data-project]");
+    if (projectBtn) {
+      selectedProject = Number(projectBtn.dataset.project);
+      activeFilmIndex = 0;
+      const workSection = document.querySelector("#projects");
+      if (workSection) {
+        workSection.innerHTML = renderWorkPage(copy[lang].slides[ids.indexOf("projects")]);
+        workSection.querySelector(`[data-project="${selectedProject}"]`)?.focus({ preventScroll: true });
+      }
+      return;
+    }
+    const deviceTrigger = event.target.closest("#projects .work-device-trigger");
+    if (deviceTrigger) {
+      openGallery(deviceTrigger, activeFilmIndex);
+      return;
+    }
+    const contactBtn = event.target.closest("[data-thought-contact]");
+    if (contactBtn) {
+      const nextIdx = Number(contactBtn.dataset.thoughtContact);
+      if (Number.isFinite(nextIdx)) {
+        selectedThought = nextIdx;
+        visitedThoughts.add(nextIdx);
+        thoughtsMobileOpen = mobileThoughtsQuery.matches;
+        const messenger = document.querySelector("#thoughts .thoughts-messenger");
+        if (messenger) {
+          messenger.classList.toggle("is-mobile-chat", thoughtsMobileOpen);
+          messenger.innerHTML = renderThoughtsMessenger();
+          if (thoughtsMobileOpen) {
+            messenger.querySelector("[data-thought-back]")?.focus({ preventScroll: true });
+          } else {
+            const activeTab = messenger.querySelector(`[data-thought-contact="${nextIdx}"]`);
+            activeTab?.focus({ preventScroll: true });
+            activeTab?.scrollIntoView({ block: "nearest", inline: "nearest" });
+          }
+          startThoughtsSequence();
+        }
+      }
+      return;
+    }
+    const thoughtBackBtn = event.target.closest("[data-thought-back]");
+    if (thoughtBackBtn) {
+      clearThoughtsTimers();
+      thoughtsMobileOpen = false;
+      const messenger = document.querySelector("#thoughts .thoughts-messenger");
+      if (messenger) {
+        messenger.classList.remove("is-mobile-chat");
+        messenger.innerHTML = renderThoughtsMessenger();
+        messenger
+          .querySelector(`[data-thought-contact="${selectedThought}"]`)
+          ?.focus({ preventScroll: true });
+      }
+      return;
+    }
+    const thoughtReplayBtn = event.target.closest("[data-thought-replay]");
+    if (thoughtReplayBtn) {
+      replayThoughtsStream();
+      return;
+    }
     const techWord = event.target.closest("[data-tech-word]");
     if (techWord) {
       activeTechDevice = techWord.dataset.techWord;
@@ -1272,6 +1954,24 @@
 
   document.addEventListener("visibilitychange", () => syncPortraitBubble());
   mobileBubbleQuery.addEventListener("change", () => syncPortraitBubble());
+  mobileThoughtsQuery.addEventListener("change", () => {
+    const messenger = document.querySelector("#thoughts .thoughts-messenger");
+    if (!messenger) return;
+    if (!mobileThoughtsQuery.matches) {
+      thoughtsMobileOpen = false;
+      visitedThoughts.add(selectedThought);
+      messenger.classList.remove("is-mobile-chat");
+      messenger.innerHTML = renderThoughtsMessenger();
+      if (current === ids.indexOf("thoughts")) {
+        startThoughtsSequence();
+      }
+    } else {
+      messenger.classList.toggle("is-mobile-chat", thoughtsMobileOpen);
+      if (!thoughtsMobileOpen) {
+        clearThoughtsTimers();
+      }
+    }
+  });
   document.addEventListener("pointerover", (event) => {
     if (event.pointerType === "touch" || mobileBubbleQuery.matches) return;
     const frame = event.target.closest(".portrait-frame");
