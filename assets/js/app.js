@@ -1084,8 +1084,10 @@
     const c = copy[lang];
     document.documentElement.lang = lang;
     document.title = siteConfig.title;
-    document.querySelector(".brand").firstChild.textContent = siteConfig.name;
-    document.querySelector(".brand span").textContent = c.role;
+    const brandName = document.querySelector(".brand .brand-name");
+    const brandRole = document.querySelector(".brand .brand-role");
+    if (brandName) brandName.textContent = siteConfig.name;
+    if (brandRole) brandRole.textContent = c.role;
     document.querySelector("nav").innerHTML = c.nav
       .map((n, i) => `<a href="#${ids[i]}">${n}</a>`)
       .join("");
